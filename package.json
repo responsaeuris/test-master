@@ -1,0 +1,51 @@
+{
+  "name": "plugin-core",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "example": "examples",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "npm run lint && npm run jest",
+    "lint": "eslint . test/. --config .eslintrc.json --fix --max-warnings=10",
+    "jest": "jest --detectOpenHandles --watchAll",
+    "jest:ci": "jest --forceExit --ci --testResultsProcessor=\"./node_modules/jest-junit-reporter\" --coverage=true",
+    "start": "node ./index.js",
+    "dev": "PORT=3100 node ./index.js",
+    "debug": "PORT=3100 node ./index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://stash.getconnected.it/scm/rspevo/plugin-core.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "crypto-js": "^4.0.0",
+    "fastify": "^3.0.0",
+    "fastify-autoload": "^3.0.2",
+    "fastify-basic-auth": "^1.0.1",
+    "fastify-cors": "^5.0.0",
+    "fastify-plugin": "^3.0.0",
+    "fastify-static": "^3.3.0",
+    "fastify-swagger": "^3.5.0",
+    "node-fetch": "^2.6.1",
+    "pino-applicationinsights": "^2.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.2.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-prettier": "^7.0.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-prettier": "^3.2.0",
+    "eslint-plugin-react": "^7.21.5",
+    "eslint-plugin-react-hooks": "^4.0.0",
+    "jest": "^26.6.3",
+    "jest-junit-reporter": "^1.1.0",
+    "prettier": "^2.2.1"
+  }
+}
