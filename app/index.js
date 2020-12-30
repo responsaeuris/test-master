@@ -21,7 +21,7 @@ module.exports = fp(
       options: { ...opts },
     })
 
-    fastify.decorate('exampleDecorator', () => 'decorated')
+    fastify.decorate('exampleDecorator', () => 'ri-decorated')
 
     fastify.register(oas, {
       swagger: {
