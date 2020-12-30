@@ -25,6 +25,7 @@
   "license": "MIT",
   "dependencies": {
     "crypto-js": "^4.0.0",
+    "csv-parser": "^3.0.0",
     "fastify": "^3.0.0",
     "fastify-autoload": "^3.0.2",
     "fastify-basic-auth": "^1.0.1",
@@ -33,6 +34,8 @@
     "fastify-plugin": "^3.0.0",
     "fastify-static": "^3.3.0",
     "fastify-swagger": "^3.5.0",
+    "neat-csv": "^6.0.0",
+    "node-cache": "^5.1.2",
     "node-fetch": "^2.6.1",
     "pino-applicationinsights": "^2.1.0"
   },

@@ -2,6 +2,8 @@ const fp = require('fastify-plugin')
 const oas = require('fastify-oas')
 const autoload = require('fastify-autoload')
 const path = require('path')
+const cache = require('./cache/cache')
+const csv = require('./csv/csv')
 
 const defaultOptions = {
   appName: 'Application Name',
@@ -14,7 +16,7 @@ const defaultOptions = {
 
 module.exports = fp(
   async (fastify, opts, next) => {
-    const options = { ...defaultOptions, ...opts }
+    const options = { ...defaultOptions, ...opts, cache }
 
     fastify.register(autoload, {
       dir: path.join(__dirname, 'routes'),
@@ -22,6 +24,8 @@ module.exports = fp(
     })
 
     fastify.decorate('exampleDecorator', () => 'ri-decorated')
+
+    fastify.decorate('getCsvData', (key, file) => cache.get(key, () => csv(file)))
 
     fastify.register(oas, {
       swagger: {
