@@ -1,5 +1,5 @@
 const fastify = require("fastify");
-const pluginCore = require("../../app");
+const pluginCore = require("plugin-core-js");
 
 const app = fastify({ logger: true });
 
