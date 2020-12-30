@@ -6,7 +6,7 @@ echo "" && echo "***********************************************************" &&
 echo "checking if Constants contains default_uri"
 
 default_uri=https://elastic:elastic@localhost:9200
-occurences=$(grep -o -i $default_uri /project_root/config/constants.js | wc -l)
+occurences=$(grep -o -i $default_uri /_/config/constants.js | wc -l)
 
 if [ $occurences = 0 ]
 then

@@ -1,29 +1,41 @@
 #!/bin/bash
 set -e # stops on first error
 
-echo "" && echo "***********************************************************" && /project_root/build/scripts/print-step.sh "BUILD SOURCES"
+echo "" && echo "***********************************************************" && /_/build/scripts/print-step.sh "GENERATING BUILD FINGERPRINT"
 
-dotnet add /project_root/PluginCore.Test package coverlet.collector
-cd /project_root && dotnet build PluginCore.sln
+sed -i "s|CI_PUTS_HERE_LAST_GIT_COMMIT|$LAST_COMMIT|g" /_/app/routes/status/index.js
+today=$(date)
+sed -i "s|CI_PUTS_HERE_DEPLOY_DATE|$today|g" /_/app/routes/status/index.js
 
+cat /_/app/routes/status/index.js
 
-echo "" && echo "***********************************************************" && /project_root/build/scripts/print-step.sh "RUN UNIT TESTS"
+echo "" && echo "***********************************************************" && /_/build/scripts/print-step.sh "CLEANING TEST FOLDER"
 
-set +e # disable stops on first error to allow report for failed tests
-dotnet test /project_root/PluginCore.Test/PluginCore.Test.csproj -l:"trx;LogFilename=/test-reports/TestResult.trx" --collect:"XPlat Code Coverage" --results-directory:"/test-reports"
-test_result=$?
+# creates output directory if not exists (locally it will be created on bamboo it will not create cause a docker volume is mounted under /test-reports)
+mkdir -p /test-reports 
 
-set -e # re-enable stops on first error
+cd /test-reports && rm -rf ./* && cd ..
 
-echo "" && echo "***********************************************************" && /project_root/build/scripts/print-step.sh "ELABORATING TESTS REPORTS"
+echo "test folder recreated"
+cd /test-reports && ls -l && cd .. # count content of /test-reports folder
 
-trx2junit /test-reports/TestResult.trx
+echo "" && echo "***********************************************************" && /_/build/scripts/print-step.sh "RESTORING PACKAGES SOURCES"
 
-#mv /test-reports/*/coverage.cobertura.xml /test-reports/ --backup=numbered
-reportgenerator "-reports:/test-reports/*/coverage.cobertura.xml" "-targetdir:/test-reports" "-reporttypes:Html;Clover"
+cd /_/app/
+npm config set store-dir /test-reports/.pnpm-store
+npm set progress=false
+npm i --prefer-offline
 
-if [ $test_result -ne 0 ]
-then
-  echo "Unit test phase failed, build aborted"
-  exit $test_result
-fi
+echo "" && echo "***********************************************************" && /_/build/scripts/print-step.sh "LINTING"
+npm run lint
+
+echo "" && echo "***********************************************************" && /_/build/scripts/print-step.sh "RUNNING UNIT TEST"
+npm run jest:ci
+
+echo "copying unit test result to /test-result folder"
+cp test-report.xml /test-reports/TestResult.xml
+
+echo "copying coverage reports to /test-result folder"
+cd coverage/lcov-report
+
+mv -v ./* /test-reports/
