@@ -1,14 +1,6 @@
 #!/bin/bash
 set -e # stops on first error
 
-echo "" && echo "***********************************************************" && /_/build/scripts/print-step.sh "GENERATING BUILD FINGERPRINT"
-
-sed -i "s|CI_PUTS_HERE_LAST_GIT_COMMIT|$LAST_COMMIT|g" /_/app/routes/status/index.js
-today=$(date)
-sed -i "s|CI_PUTS_HERE_DEPLOY_DATE|$today|g" /_/app/routes/status/index.js
-
-cat /_/app/routes/status/index.js
-
 echo "" && echo "***********************************************************" && /_/build/scripts/print-step.sh "CLEANING TEST FOLDER"
 
 # creates output directory if not exists (locally it will be created on bamboo it will not create cause a docker volume is mounted under /test-reports)
