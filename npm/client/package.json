@@ -1,5 +1,5 @@
 {
-  "name": "plugin-core",
+  "name": "client-app",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -13,7 +13,7 @@
     "jest": "jest --detectOpenHandles --watchAll",
     "jest:ci": "jest --forceExit --ci --testResultsProcessor=\"./node_modules/jest-junit-reporter\" --coverage=true",
     "start": "node ./index.js",
-    "dev": "PORT=3100 node ./examples/basic/server.js",
+    "dev": "PORT=3100 node ./index.js",
     "debug": "PORT=3100 node ./index.js"
   },
   "repository": {
