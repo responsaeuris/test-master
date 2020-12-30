@@ -6,11 +6,11 @@ echo "" && echo "***********************************************************" &&
 echo "checking if Constants contains default_uri"
 
 default_uri=https://elastic:elastic@localhost:9200
-occurences=$(grep -o -i $default_uri /_/config/constants.js | wc -l)
+occurences=$(grep -o -i $default_uri /_/app/config/constants.js | wc -l)
 
 if [ $occurences = 0 ]
 then
-  echo "default elk uri $default_uri was not found in /_/config/constants.js, build aborted"
+  echo "default elk uri $default_uri was not found in /_/app/config/constants.js, build aborted"
   exit 1
 fi
 
@@ -24,7 +24,7 @@ fi
 
 echo "replacing elk uri from machine-keys.env"
 
-sed -i "s|$default_uri|$ELK_URI|g" /_/config/constants.js
+sed -i "s|$default_uri|$ELK_URI|g" /_/app/config/constants.js
 
 echo "" && echo "***********************************************************" && /_/build/scripts/print-step.sh "GENERATING BUILD FINGERPRINT"
 
