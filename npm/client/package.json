@@ -16,10 +16,6 @@
     "dev": "PORT=3100 node ./index.js",
     "debug": "PORT=3100 node ./index.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://stash.getconnected.it/scm/rspevo/plugin-core-js.git"
-  },
   "keywords": [],
   "author": "",
   "license": "MIT",
@@ -35,7 +31,7 @@
     "fastify-swagger": "^3.5.0",
     "node-fetch": "^2.6.1",
     "pino-applicationinsights": "^2.1.0",
-    "plugin-core-js": "git+https://stash.getconnected.it/scm/rspevo/plugin-core-js.git#develop"
+    "plugin-core-js": "git+https://stash.getconnected.it/scm/rspevo/plugin-core-js.git#master"
   },
   "devDependencies": {
     "eslint": "^7.2.0",
