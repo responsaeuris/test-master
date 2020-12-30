@@ -1,9 +1,9 @@
 #!/bin/bash
 set -e # stops on first error
 
-echo "\n$1" >> /project_root/build/build-status.txt
+echo "\n$1" >> /_/build/build-status.txt
 
-step=$(< /project_root/build/build-status.txt wc -l)
+step=$(< /_/build/build-status.txt wc -l)
 step=$((step +1))
 
 echo "***********************************************************"
