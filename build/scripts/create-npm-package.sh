@@ -6,7 +6,7 @@ echo "" && echo "***********************************************************" &&
 packageJson=/_/package.json
 rm $packageJson
 
-cd /_ && npm init -y
+cd /_ && npm init -y > /dev/null
 
 # this replace is necessary due git repository url which contains information about user who is pullig it
 find=stash.getconnected.it
