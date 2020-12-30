@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://stash.getconnected.it/scm/rspevo/plugin-core.git"
+    "url": "https://stash.getconnected.it/scm/rspevo/plugin-core-js.git"
   },
   "keywords": [],
   "author": "",
@@ -34,7 +34,8 @@
     "fastify-static": "^3.3.0",
     "fastify-swagger": "^3.5.0",
     "node-fetch": "^2.6.1",
-    "pino-applicationinsights": "^2.1.0"
+    "pino-applicationinsights": "^2.1.0",
+    "plugin-core-js": "git+https://stash.getconnected.it/scm/rspevo/plugin-core-js.git#develop"
   },
   "devDependencies": {
     "eslint": "^7.2.0",
