@@ -23,7 +23,7 @@ module.exports = fp(
       options: { ...opts },
     })
 
-    fastify.decorate('exampleDecorator', () => 'ri-decorated')
+    fastify.decorate('exampleDecorator', () => 'decorated')
 
     fastify.decorate('getCsvData', (key, file) => cache.get(key, () => csv(file)))
 
