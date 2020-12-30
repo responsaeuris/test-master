@@ -1,6 +1,7 @@
 const fp = require('fastify-plugin')
 const oas = require('fastify-oas')
-const smr = require('./models/singleChoiceResource')
+const autoload = require('fastify-autoload')
+const path = require('path')
 
 const defaultOptions = {
   appName: 'Application Name',
@@ -15,16 +16,9 @@ module.exports = fp(
   async (fastify, opts, next) => {
     const options = { ...defaultOptions, ...opts }
 
-    // plugin route example --> remove it eventually
-    fastify.get(`${opts.prefix}/smr`, async (req, reply) => {
-      smr.resource = {
-        actionTitle: 'sdfsdf',
-        payload: { field: 'value' },
-        description: 'asdasd',
-        imageUrl: 'asdasd',
-        galleryUrls: [],
-      }
-      reply.send(smr.resource)
+    fastify.register(autoload, {
+      dir: path.join(__dirname, 'routes'),
+      options: { ...opts },
     })
 
     fastify.decorate('exampleDecorator', () => 'decorated')
