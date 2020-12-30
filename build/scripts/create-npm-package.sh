@@ -9,7 +9,7 @@ rm $packageJson
 cd /_ && npm init -y
 
 # this replace is necessary due git repository url which contains information about user who is pullig it
-find=gattucci
+find=stash.getconnected.it
 replace="\"url\": \"https://stash.getconnected.it/scm/rspevo/plugin-core-js.git\""
 /_/build/scripts/replace-in-file.sh $packageJson $find $replace
 
