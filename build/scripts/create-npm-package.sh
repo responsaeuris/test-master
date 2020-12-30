@@ -11,11 +11,11 @@ cd /_ && npm init -y > /dev/null
 # this replace is necessary due git repository url which contains information about user who is pullig it
 find=stash.getconnected.it
 replace="\"url\": \"https://stash.getconnected.it/scm/rspevo/plugin-core-js.git\""
-/_/build/scripts/replace-in-file.sh $packageJson $find $replace
+/_/build/scripts/replace-in-file.sh $packageJson "$find" "$replace"
 
 find="\"license\": \"ISC\""
 replace="\"license\": \"ISC\", \"files\": [ \"app\" ]"
-/_/build/scripts/replace-in-file.sh $packageJson $find $replace
+/_/build/scripts/replace-in-file.sh $packageJson "$find" "$replace"
 
 
 cat $packageJson
