@@ -12,4 +12,8 @@ find="\"license\": \"ISC\""
 replace="\"license\": \"ISC\", \"files\": [ \"app\" ]"
 /_/build/scripts/replace-in-file.sh $packageJson $find $replace
 
+find=gattucci
+replace="\"url\": \"https://stash.getconnected.it/scm/rspevo/plugin-core-js.git\""
+/_/build/scripts/replace-in-file.sh $packageJson $find $replace
+
 cat $packageJson
