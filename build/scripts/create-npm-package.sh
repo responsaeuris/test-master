@@ -5,3 +5,5 @@ echo "" && echo "***********************************************************" &&
 
 rm /_/package.json
 cd /_ && npm init -y
+
+cat /_/package.json
