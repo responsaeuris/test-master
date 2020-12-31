@@ -7,8 +7,12 @@
     "example": "examples",
     "test": "test"
   },
+  "files": [
+    "app"
+  ],
   "scripts": {
-    "preinstall": "echo \"updating outher package.json\" && npm i shx && shx cp package.json ../package.json && echo \"Done!\"",
+    "do_not_run": "echo \"updating outher package.json\" && npm i shx && shx cp package.json ../package.json && echo \"Done!\"",
+    "do_not_run2": "shx sed -i \"s/do_not_run/do_not_run/g\" ../package.json && shx sed -i \"s/do_not_run2/do_not_run2/g\" ../package.json",
     "test": "npm run lint && npm run jest",
     "lint": "eslint . test/. --config .eslintrc.json --fix --max-warnings=10",
     "jest": "jest --detectOpenHandles --watchAll",
