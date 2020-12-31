@@ -3,12 +3,13 @@ const path = require('path')
 /* eslint-disable global-require */
 describe('plugin tests', () => {
   it('should register the correct decorators', async () => {
-    expect.assertions(2)
+    expect.assertions(3)
     const app = require('fastify')()
 
     app.register(require('..'), { prefix: '/core' })
 
     await app.ready()
+    expect(app.coreStatus).toBeDefined()
     expect(app.getCsvData).toBeDefined()
     expect(app.getTranslations).toBeDefined()
   })

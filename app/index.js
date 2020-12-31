@@ -4,6 +4,7 @@ const autoload = require('fastify-autoload')
 const path = require('path')
 const cache = require('./cache/cache')
 const csv = require('./csv/csv')
+const { status } = require('./routes/status/index')
 
 const defaultOptions = {
   appName: 'Application Name',
@@ -34,6 +35,7 @@ module.exports = fp(
       options: { ...opts },
     })
 
+    fastify.decorate('coreStatus', status)
     fastify.decorate('getCsvData', getCsvData)
     fastify.decorate('getTranslations', getTranslations)
 
