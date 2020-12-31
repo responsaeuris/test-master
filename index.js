@@ -1,2 +1,2 @@
-const pluginCore = require("./app/index.js");
+const pluginCore = require("./app");
 module.exports = pluginCore;
