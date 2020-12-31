@@ -6,7 +6,6 @@ const app = fastify({ logger: true });
 app.register(pluginCore, { prefix: "/core" });
 
 app.get("/", async (req, reply) => {
-  // useless comment
   reply.send(app.exampleDecorator());
 });
 
