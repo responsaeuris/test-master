@@ -7,9 +7,6 @@
     "example": "examples",
     "test": "test"
   },
-  "files": [
-    "app"
-  ],
   "scripts": {
     "preinstall": "echo \"updating outher package.json\" && npm i shx && shx cp package.json ../package.json && echo \"Done!\"",
     "test": "npm run lint && npm run jest",
