@@ -18,9 +18,8 @@ const defaultOptions = {
 
 const csvParser = async (file) => csv(file).catch(() => null)
 
-const getCsvData = async (key, file, useCache = true) => {
-  return useCache ? cache.get(key, () => csvParser(file)) : csvParser(file)
-}
+const getCsvData = async (key, file, useCache = true) =>
+  useCache ? cache.get(key, () => csvParser(file)) : csvParser(file)
 
 const getTranslations = async (translationsPath, useCache = true) => {
   const translations = await getCsvData('translations', translationsPath, useCache)
