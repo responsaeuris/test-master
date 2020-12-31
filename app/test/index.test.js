@@ -1,9 +1,10 @@
 const path = require('path')
+const app = require('..')
 const helper = require('./helper')
 
 describe('plugin registration', () => {
   it('should register the correct decorators', async () => {
-    expect.assertions(4)
+    expect.assertions(5)
 
     const sut = await helper.setupApp()
 
@@ -11,6 +12,7 @@ describe('plugin registration', () => {
     expect(sut.cache).toBeDefined()
     expect(sut.getCsvData).toBeDefined()
     expect(sut.getTranslations).toBeDefined()
+    expect(sut.singleChoice).toBeDefined()
   })
 })
 
@@ -76,5 +78,24 @@ describe('options loading', () => {
 
     expect(actual[0]).toEqual('{{KEY_SELECT}}')
     expect(actual[1]).toEqual('{{KEY_VIEW_DETAILS}}')
+  })
+})
+
+describe('single choice resouce', () => {
+  const validate = (output) => {
+    // expect(output.text).toBeDefined()
+    // expect(output.payload).toBeDefined()
+    // expect(output.actionTitle).toBeDefined()
+    // expect(output.imageUrl).toBeDefined()
+    // expect(output.galleryUrls).toBeDefined()
+  }
+
+  it('translate a siple string', async () => {
+    const sut = await helper.setupApp()
+    const data = 'hello'
+
+    const actual = sut.singleChoice(data)
+
+    validate(actual)
   })
 })

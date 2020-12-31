@@ -5,6 +5,7 @@ const path = require('path')
 const cache = require('./cache/cache')
 const csv = require('./csv/csv')
 const { status } = require('./routes/status/index')
+const { toSingle } = require('./models/singleChoiceResource')
 
 const defaultOptions = {
   appName: 'Application Name',
@@ -28,19 +29,21 @@ const getTranslations = async (translationsPath, useCache = true) => {
 
 module.exports = fp(
   async (fastify, opts, next) => {
+    const f = fastify
     const options = { ...defaultOptions, ...opts, cache }
 
-    fastify.register(autoload, {
+    f.register(autoload, {
       dir: path.join(__dirname, 'routes'),
       options: { ...opts },
     })
 
-    fastify.decorate('coreStatus', status)
-    fastify.decorate('cache', cache)
-    fastify.decorate('getCsvData', getCsvData)
-    fastify.decorate('getTranslations', getTranslations)
+    f.decorate('coreStatus', status)
+    f.decorate('cache', cache)
+    f.decorate('getCsvData', getCsvData)
+    f.decorate('getTranslations', getTranslations)
+    f.decorate('singleChoice', toSingle)
 
-    fastify.register(oas, {
+    f.register(oas, {
       swagger: {
         info: {
           title: options.appName,
