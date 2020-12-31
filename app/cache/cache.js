@@ -23,3 +23,7 @@ module.exports.delete = (key) => {
   checkCache()
   cache.del(key)
 }
+
+module.exports.nuke = () => {
+  cache = null
+}
