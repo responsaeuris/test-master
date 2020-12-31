@@ -1,0 +1,16 @@
+{
+  "name": "plugin-core-js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://stash.getconnected.it/scm/rspevo/plugin-core-js.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
