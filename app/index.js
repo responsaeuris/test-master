@@ -36,6 +36,7 @@ module.exports = fp(
     })
 
     fastify.decorate('coreStatus', status)
+    fastify.decorate('cache', cache)
     fastify.decorate('getCsvData', getCsvData)
     fastify.decorate('getTranslations', getTranslations)
 

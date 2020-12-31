@@ -1,28 +1,14 @@
 const path = require('path')
-const cache = require('../cache/cache')
 const helper = require('./helper')
-
-/* eslint-disable global-require */
-const setupApp = async (config) => {
-  cache.nuke()
-
-  const conf = config || {}
-  conf.prefix = '/core'
-
-  const app = require('fastify')()
-
-  app.register(require('..'), conf)
-
-  return app.ready()
-}
 
 describe('plugin registration', () => {
   it('should register the correct decorators', async () => {
-    expect.assertions(3)
+    expect.assertions(4)
 
-    const app = await setupApp()
+    const app = await helper.setupApp()
 
     expect(app.coreStatus).toBeDefined()
+    expect(app.cache).toBeDefined()
     expect(app.getCsvData).toBeDefined()
     expect(app.getTranslations).toBeDefined()
   })
@@ -30,7 +16,7 @@ describe('plugin registration', () => {
 
 describe('cache', () => {
   it('correctly loads translations into array', async () => {
-    const app = await setupApp()
+    const app = await helper.setupApp()
 
     const actual = await app.getTranslations(path.join(__dirname, 'csv', 'valid-csv.csv'), false)
     expect(actual).toBeInstanceOf(Array)
@@ -38,7 +24,7 @@ describe('cache', () => {
   })
 
   it('get empty array if app initialization has been made without translation file', async () => {
-    const app = await setupApp()
+    const app = await helper.setupApp()
 
     const actual = await app.getTranslations(path.join(__dirname, 'csv', 'valid-csv.csv'), true)
     expect(actual).toBeInstanceOf(Array)
@@ -48,7 +34,7 @@ describe('cache', () => {
 
 describe('options loading', () => {
   const getSwaggerInfo = async (opt) => {
-    const app = await setupApp(opt)
+    const app = await helper.setupApp(opt)
 
     const response = await helper.doGet(app, 'documentation/json')
 
