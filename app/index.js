@@ -12,6 +12,17 @@ const defaultOptions = {
     { url: 'server1 url', description: 'server1 description' },
     { url: 'server2 url', description: 'server2 description' },
   ],
+  translationsPath: '',
+}
+
+const csvParser = async (file) => csv(file).catch(() => null)
+
+const getCsvData = async (key, file, useCache = true) =>
+  useCache ? cache.get(key, () => csvParser(file)) : csvParser(file)
+
+const getTranslations = async (translationsPath, useCache = true) => {
+  const translations = await getCsvData('translations', translationsPath, useCache)
+  return translations ? translations.map((tr) => tr.TRANSLATION_KEYS) : []
 }
 
 module.exports = fp(
@@ -23,16 +34,15 @@ module.exports = fp(
       options: { ...opts },
     })
 
-    fastify.decorate('exampleDecorator', () => 'decorated')
-
-    fastify.decorate('getCsvData', (key, file) => cache.get(key, () => csv(file)))
+    fastify.decorate('getCsvData', getCsvData)
+    fastify.decorate('getTranslations', getTranslations)
 
     fastify.register(oas, {
       swagger: {
         info: {
           title: options.appName,
           version: options.apiVersion,
-          'x-translations': [],
+          'x-translations': await getTranslations(options.translationsPath),
           'x-log-index': `${options.appName}-${options.apiVersion}`,
         },
         servers: options.servers,

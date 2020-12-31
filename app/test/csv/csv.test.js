@@ -8,13 +8,8 @@ describe('csv tests', () => {
     expect(actual.length).toBeGreaterThan(0)
   })
 
-  it('throws with not existing csv file', async () => {
-    let error = null
-    try {
-      await csv(path.join(__dirname, 'not-existing.csv'))
-    } catch (e) {
-      error = e
-    }
-    expect(error).not.toEqual(null)
+  it('returns null with not existing csv file', async () => {
+    const actual = await csv(path.join(__dirname, 'not-existing.csv')).catch(() => null)
+    expect(actual).toEqual(null)
   })
 })
