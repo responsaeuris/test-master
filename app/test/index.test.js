@@ -5,28 +5,28 @@ describe('plugin registration', () => {
   it('should register the correct decorators', async () => {
     expect.assertions(4)
 
-    const app = await helper.setupApp()
+    const sut = await helper.setupApp()
 
-    expect(app.coreStatus).toBeDefined()
-    expect(app.cache).toBeDefined()
-    expect(app.getCsvData).toBeDefined()
-    expect(app.getTranslations).toBeDefined()
+    expect(sut.coreStatus).toBeDefined()
+    expect(sut.cache).toBeDefined()
+    expect(sut.getCsvData).toBeDefined()
+    expect(sut.getTranslations).toBeDefined()
   })
 })
 
 describe('cache', () => {
   it('correctly loads translations into array', async () => {
-    const app = await helper.setupApp()
+    const sut = await helper.setupApp()
 
-    const actual = await app.getTranslations(path.join(__dirname, 'csv', 'valid-csv.csv'), false)
+    const actual = await sut.getTranslations(path.join(__dirname, 'csv', 'valid-csv.csv'), false)
     expect(actual).toBeInstanceOf(Array)
     expect(actual.length).toEqual(2)
   })
 
   it('get empty array if app initialization has been made without translation file', async () => {
-    const app = await helper.setupApp()
+    const sut = await helper.setupApp()
 
-    const actual = await app.getTranslations(path.join(__dirname, 'csv', 'valid-csv.csv'), true)
+    const actual = await sut.getTranslations(path.join(__dirname, 'csv', 'valid-csv.csv'), true)
     expect(actual).toBeInstanceOf(Array)
     expect(actual.length).toEqual(0)
   })
@@ -34,9 +34,9 @@ describe('cache', () => {
 
 describe('options loading', () => {
   const getSwaggerInfo = async (opt) => {
-    const app = await helper.setupApp(opt)
+    const sut = await helper.setupApp(opt)
 
-    const response = await helper.doGet(app, 'documentation/json')
+    const response = await helper.doGet(sut, 'documentation/json')
 
     const actual = JSON.parse(response.payload)
 
