@@ -16,7 +16,7 @@ const setupApp = async (config) => {
   return app.ready()
 }
 
-describe('plugin tests', () => {
+describe('plugin registration', () => {
   it('should register the correct decorators', async () => {
     expect.assertions(3)
 
@@ -26,69 +26,69 @@ describe('plugin tests', () => {
     expect(app.getCsvData).toBeDefined()
     expect(app.getTranslations).toBeDefined()
   })
+})
 
-  describe('cache', () => {
-    it('correctly loads translations into array', async () => {
-      const app = await setupApp()
+describe('cache', () => {
+  it('correctly loads translations into array', async () => {
+    const app = await setupApp()
 
-      const actual = await app.getTranslations(path.join(__dirname, 'csv', 'valid-csv.csv'), false)
-      expect(actual).toBeInstanceOf(Array)
-      expect(actual.length).toEqual(2)
-    })
-
-    it('get empty array if app initialization has been made without translation file', async () => {
-      const app = await setupApp()
-
-      const actual = await app.getTranslations(path.join(__dirname, 'csv', 'valid-csv.csv'), true)
-      expect(actual).toBeInstanceOf(Array)
-      expect(actual.length).toEqual(0)
-    })
+    const actual = await app.getTranslations(path.join(__dirname, 'csv', 'valid-csv.csv'), false)
+    expect(actual).toBeInstanceOf(Array)
+    expect(actual.length).toEqual(2)
   })
 
-  describe('options loading', () => {
-    const getSwaggerInfo = async (opt) => {
-      const app = await setupApp(opt)
+  it('get empty array if app initialization has been made without translation file', async () => {
+    const app = await setupApp()
 
-      const response = await helper.doGet(app, 'documentation/json')
+    const actual = await app.getTranslations(path.join(__dirname, 'csv', 'valid-csv.csv'), true)
+    expect(actual).toBeInstanceOf(Array)
+    expect(actual.length).toEqual(0)
+  })
+})
 
-      const actual = JSON.parse(response.payload)
+describe('options loading', () => {
+  const getSwaggerInfo = async (opt) => {
+    const app = await setupApp(opt)
 
-      expect(actual.info).toBeDefined()
-      return actual.info
-    }
+    const response = await helper.doGet(app, 'documentation/json')
 
-    it('loads appName', async () => {
-      const actual = await getSwaggerInfo({ appName: 'some-app-name' })
+    const actual = JSON.parse(response.payload)
 
-      expect(actual.title).toEqual('some-app-name')
+    expect(actual.info).toBeDefined()
+    return actual.info
+  }
+
+  it('loads appName', async () => {
+    const actual = await getSwaggerInfo({ appName: 'some-app-name' })
+
+    expect(actual.title).toEqual('some-app-name')
+  })
+
+  it('loads version', async () => {
+    const actual = await getSwaggerInfo({ apiVersion: 'v1' })
+
+    expect(actual.version).toEqual('v1')
+  })
+
+  it('loads x-log-index', async () => {
+    const actual = await getSwaggerInfo({ appName: 'some-app-name', apiVersion: 'v1' })
+
+    expect(actual['x-log-index']).toEqual('some-app-name-v1')
+  })
+
+  it('loads translations', async () => {
+    const response = await getSwaggerInfo({
+      translationsPath: path.join(__dirname, 'csv', 'valid-csv.csv'),
     })
 
-    it('loads version', async () => {
-      const actual = await getSwaggerInfo({ apiVersion: 'v1' })
+    const actual = response['x-translations']
 
-      expect(actual.version).toEqual('v1')
-    })
+    expect(actual).toBeDefined()
+    expect(actual).toBeInstanceOf(Array)
 
-    it('loads x-log-index', async () => {
-      const actual = await getSwaggerInfo({ appName: 'some-app-name', apiVersion: 'v1' })
+    expect(actual.length).toEqual(2)
 
-      expect(actual['x-log-index']).toEqual('some-app-name-v1')
-    })
-
-    it('loads translations', async () => {
-      const response = await getSwaggerInfo({
-        translationsPath: path.join(__dirname, 'csv', 'valid-csv.csv'),
-      })
-
-      const actual = response['x-translations']
-
-      expect(actual).toBeDefined()
-      expect(actual).toBeInstanceOf(Array)
-
-      expect(actual.length).toEqual(2)
-
-      expect(actual[0]).toEqual('{{KEY_SELECT}}')
-      expect(actual[1]).toEqual('{{KEY_VIEW_DETAILS}}')
-    })
+    expect(actual[0]).toEqual('{{KEY_SELECT}}')
+    expect(actual[1]).toEqual('{{KEY_VIEW_DETAILS}}')
   })
 })
