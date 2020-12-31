@@ -7,9 +7,6 @@
     "example": "examples",
     "test": "test"
   },
-  "files": [
-    "app"
-  ],
   "scripts": {
     "preinstall": "echo \"updating outher package.json\" && npm i shx && shx cp package.json ../package.json && echo \"Done!\"",
     "postinstall": "shx sed -i \"s/preinstall/do_not_run/g\" ../package.json && shx sed -i \"s/postinstall/do_not_run2/g\" ../package.json",
