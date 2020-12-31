@@ -1,5 +1,4 @@
 const path = require('path')
-const app = require('..')
 const helper = require('./helper')
 
 describe('plugin registration', () => {
@@ -83,11 +82,8 @@ describe('options loading', () => {
 
 describe('single choice resouce', () => {
   const validate = (output) => {
-    // expect(output.text).toBeDefined()
-    // expect(output.payload).toBeDefined()
-    // expect(output.actionTitle).toBeDefined()
-    // expect(output.imageUrl).toBeDefined()
-    // expect(output.galleryUrls).toBeDefined()
+    expect(output.text).toBeDefined()
+    expect(output.payload).toBeDefined()
   }
 
   it('translate a siple string', async () => {

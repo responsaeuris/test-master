@@ -41,7 +41,14 @@ describe('results', () => {
   })
 
   it('converts complex objects with a valid converter', () => {
-    const converter = (data) => ({ text: data.prop.value, payload: data.p })
+    const converter = (data) => ({
+      text: data.prop.value,
+      payload: data.p,
+      description: data.p.someKey,
+      actionTitle: data.p.someKey,
+      imageUrl: data.p.someKey,
+      galleryUrls: [],
+    })
     const actual = sut.toSingle(
       {
         prop: { value: 'some-value' },
@@ -52,6 +59,11 @@ describe('results', () => {
 
     expect(actual.text).toEqual('some-value')
     expect(actual.payload).toEqual({ someKey: 'another-value' })
+    expect(actual.description).toEqual('another-value')
+    expect(actual.actionTitle).toEqual('another-value')
+    expect(actual.imageUrl).toEqual('another-value')
+
+    expect(actual.galleryUrls).toEqual([])
   })
 
   describe('invalid convertions', () => {
@@ -91,6 +103,49 @@ describe('results', () => {
       it('wrong dataType', () => {
         const converter = (data) => ({ text: data.prop.value, payload: data.p.someKey })
         doCheck(converter, "Error: invalid converter 'payload' property is not an object")
+      })
+    })
+
+    describe('additional properties', () => {
+      it('checks description', () => {
+        const converter = (data) => ({ text: data.prop.value, payload: data.p, description: data })
+        doCheck(converter, "Error: invalid converter 'description' is not a string")
+      })
+
+      it('checks actionTitle', () => {
+        const converter = (data) => ({
+          text: data.prop.value,
+          payload: data.p,
+          actionTitle: data,
+        })
+        doCheck(converter, "Error: invalid converter 'actionTitle' is not a string")
+      })
+
+      it('checks imageUrl', () => {
+        const converter = (data) => ({
+          text: data.prop.value,
+          payload: data.p,
+          imageUrl: data,
+        })
+        doCheck(converter, "Error: invalid converter 'imageUrl' is not a string")
+      })
+
+      it('checks galleryUrls', () => {
+        const converter = (data) => ({
+          text: data.prop.value,
+          payload: data.p,
+          galleryUrls: data,
+        })
+        doCheck(converter, "Error: invalid converter 'galleryUrls' is not an array of strings")
+      })
+
+      it('checks each galleryUrls', () => {
+        const converter = (data) => ({
+          text: data.prop.value,
+          payload: data.p,
+          galleryUrls: ['string-here', data.p],
+        })
+        doCheck(converter, "Error: invalid converter 'galleryUrls' is not an array of strings")
       })
     })
   })

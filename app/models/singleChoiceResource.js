@@ -3,19 +3,40 @@ const parse = (data) => ({
   isComplex: typeof data === 'object',
 })
 
-const validateResult = (data) => {
-  if (!data.text) throw new Error("invalid converter missing 'text' property convertion")
-  if (typeof data.text !== 'string')
+const checkGallery = (gallery) => {
+  const throwErr = () => {
+    throw new Error("invalid converter 'galleryUrls' is not an array of strings")
+  }
+
+  if (!gallery) return
+  if (!(gallery instanceof Array)) throwErr()
+
+  let isValid = true
+
+  gallery.forEach((e) => {
+    isValid = isValid && typeof e === 'string'
+  })
+
+  if (!isValid) throwErr()
+}
+
+const validateResult = (result) => {
+  if (!result.text) throw new Error("invalid converter missing 'text' property convertion")
+  if (typeof result.text !== 'string')
     throw new Error("invalid converter 'text' property is not a string")
 
-  if (!data.payload) throw new Error("invalid converter missing 'payload' property convertion")
-  if (typeof data.payload !== 'object')
+  if (!result.payload) throw new Error("invalid converter missing 'payload' property convertion")
+  if (typeof result.payload !== 'object')
     throw new Error("invalid converter 'payload' property is not an object")
+
+  checkGallery(result.galleryUrls)
+  ;['description', 'actionTitle', 'imageUrl'].forEach((p) => {
+    if (result[p] && typeof result[p] !== 'string')
+      throw new Error(`invalid converter '${p}' is not a string`)
+  })
 }
 
 module.exports.parse = parse
-
-module.exports.validateResult = validateResult
 
 module.exports.toSingle = (data, converter) => {
   const parsed = parse(data)
