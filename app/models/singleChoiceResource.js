@@ -5,7 +5,7 @@ const parse = (data) => ({
 
 const checkGallery = (gallery) => {
   const throwErr = () => {
-    throw new Error("invalid converter 'galleryUrls' is not an array of strings")
+    throw new Error("invalid converter 'gallery_urls' is not an array of strings")
   }
 
   if (!gallery) return
@@ -29,8 +29,8 @@ const validateResult = (result) => {
   if (typeof result.payload !== 'object')
     throw new Error("invalid converter 'payload' property is not an object")
 
-  checkGallery(result.galleryUrls)
-  ;['description', 'actionTitle', 'imageUrl'].forEach((p) => {
+  checkGallery(result.gallery_urls)
+  ;['description', 'action_title', 'image_url'].forEach((p) => {
     if (result[p] && typeof result[p] !== 'string')
       throw new Error(`invalid converter '${p}' is not a string`)
   })
@@ -60,11 +60,35 @@ module.exports.toSingle = (data, converter) => {
   throw new Error('dummy exceptions avoids warnings')
 }
 
-// module.exports.resource = {
-//   text: '',
-//   payload: {},
-//   description: '',
-//   actionTitle: '',
-//   imageUrl: '',
-//   galleryUrls: [],
-// }
+module.exports.ResponsaSingleChoiceResource = {
+  required: ['payload', 'text'],
+  type: 'object',
+  properties: {
+    text: {
+      type: 'string',
+    },
+    payload: {
+      type: 'object',
+      additionalProperties: false,
+    },
+    description: {
+      type: 'string',
+      nullable: true,
+    },
+    action_title: {
+      type: 'string',
+      nullable: true,
+    },
+    image_url: {
+      type: 'string',
+      nullable: true,
+    },
+    gallery_urls: {
+      type: 'array',
+      items: {
+        type: 'string',
+      },
+      nullable: true,
+    },
+  },
+}
