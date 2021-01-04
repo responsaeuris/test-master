@@ -34,13 +34,18 @@ describe('cache', () => {
 })
 
 describe('options loading', () => {
-  const getSwaggerInfo = async (opt) => {
+  const getSwagger = async (opt) => {
     const sut = await helper.setupApp(opt)
 
     const response = await helper.doGet(sut, 'documentation/json')
 
     const actual = JSON.parse(response.payload)
 
+    return actual
+  }
+
+  const getSwaggerInfo = async (opt) => {
+    const actual = await getSwagger(opt)
     expect(actual.info).toBeDefined()
     return actual.info
   }
@@ -77,6 +82,20 @@ describe('options loading', () => {
 
     expect(actual[0]).toEqual('{{KEY_SELECT}}')
     expect(actual[1]).toEqual('{{KEY_VIEW_DETAILS}}')
+  })
+
+  it('loads components with models schemas', async () => {
+    const response = await getSwagger()
+
+    expect(response.components).toBeDefined()
+    expect(response.components).toBeInstanceOf(Object)
+
+    expect(response.components.schemas).toBeDefined()
+    expect(response.components.schemas).toBeInstanceOf(Object)
+
+    const actual = response.components.schemas.ResponsaSingleChoiceResource
+    expect(actual).toBeDefined()
+    expect(actual).toBeInstanceOf(Object)
   })
 })
 

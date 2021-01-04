@@ -5,7 +5,7 @@ const path = require('path')
 const cache = require('./cache/cache')
 const csv = require('./csv/csv')
 const { status } = require('./routes/status/index')
-const { toSingle } = require('./models/singleChoiceResource')
+const { toSingle, ResponsaSingleChoiceResource } = require('./models/singleChoiceResource')
 
 const defaultOptions = {
   appName: 'Application Name',
@@ -42,6 +42,7 @@ module.exports = fp(
     f.decorate('getCsvData', getCsvData)
     f.decorate('getTranslations', getTranslations)
     f.decorate('singleChoice', toSingle)
+    f.decorate('ResponsaSingleChoiceResource', ResponsaSingleChoiceResource)
 
     f.register(oas, {
       swagger: {
@@ -52,6 +53,11 @@ module.exports = fp(
           'x-log-index': `${options.appName}-${options.apiVersion}`,
         },
         servers: options.servers,
+        components: {
+          schemas: {
+            ResponsaSingleChoiceResource,
+          },
+        },
       },
       exposeRoute: true,
     })

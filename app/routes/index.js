@@ -3,11 +3,11 @@ const smr = require('../models/singleChoiceResource')
 module.exports = async function (fastify) {
   fastify.get(`/smr`, async (req, reply) => {
     smr.resource = {
-      actionTitle: 'sdfsdf',
+      action_title: 'sdfsdf',
       payload: { field: 'value' },
       description: 'asdasd',
-      imageUrl: 'asdasd',
-      galleryUrls: [],
+      image_url: 'asdasd',
+      gallery_urls: [],
     }
     reply.send(smr.resource)
   })
