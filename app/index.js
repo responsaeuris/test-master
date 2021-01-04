@@ -66,3 +66,5 @@ module.exports = fp(
   },
   { fastify: '3.x', name: 'plugin-core' }
 )
+
+module.exports.ResponsaSingleChoiceResource = ResponsaSingleChoiceResource
