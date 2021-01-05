@@ -39,6 +39,7 @@
     "neat-csv": "^6.0.0",
     "node-cache": "^5.1.2",
     "node-fetch": "^2.6.1",
+    "pino": "^6.9.0",
     "pino-applicationinsights": "^2.1.0"
   },
   "devDependencies": {

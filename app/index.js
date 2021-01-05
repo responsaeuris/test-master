@@ -2,6 +2,7 @@ const fp = require('fastify-plugin')
 const oas = require('fastify-oas')
 const autoload = require('fastify-autoload')
 const path = require('path')
+const log = require('pino')({ level: 'info' })
 const cache = require('./cache/cache')
 const csv = require('./csv/csv')
 const { status } = require('./routes/status/index')
@@ -68,3 +69,4 @@ module.exports = fp(
 )
 
 module.exports.ResponsaSingleChoiceResource = ResponsaSingleChoiceResource
+module.exports.log = log
