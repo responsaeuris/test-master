@@ -32,7 +32,7 @@ const getTranslations = async (translationsPath, useCache = true) => {
   return translations ? translations.map((tr) => tr.TRANSLATION_KEYS) : []
 }
 
-const buildLogger = (esIndex = null) => {
+const loggerFactory = (esIndex = null) => {
   const streams = [{ stream: process.stdout }]
   if (esIndex) {
     streams.push({
@@ -52,7 +52,7 @@ const buildLogger = (esIndex = null) => {
   }
 
   const logger = pino({ level: 'info' }, pinoms.multistream(streams))
-  logger.info(`core logger built with streams ${streams}`)
+  logger.info(`core logger built with ${streams.length} streams`)
   return logger
 }
 
@@ -96,5 +96,5 @@ module.exports = fp(
   { fastify: '3.x', name: 'plugin-core' }
 )
 
-module.exports.log = (esIndex = null) => buildLogger(esIndex)
+module.exports.loggerFactory = loggerFactory
 module.exports.ResponsaSingleChoiceResource = ResponsaSingleChoiceResource

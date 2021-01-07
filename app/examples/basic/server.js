@@ -1,7 +1,7 @@
 const fastify = require('fastify')
 const pluginCore = require('../..')
 
-const app = fastify({ logger: pluginCore.log('prova-client') })
+const app = fastify({ logger: pluginCore.loggerFactory('prova-client') })
 
 app.register(pluginCore, { prefix: '/core' })
 app.log.info('started')
