@@ -1,5 +1,6 @@
 const path = require('path')
 const helper = require('./helper')
+const core = require('..')
 
 describe('plugin registration', () => {
   it('should register the correct decorators', async () => {
@@ -104,18 +105,36 @@ describe('options loading', () => {
   })
 })
 
-describe('single choice resouce', () => {
+describe('single choice resource', () => {
   const validate = (output) => {
     expect(output.text).toBeDefined()
     expect(output.payload).toBeDefined()
   }
 
-  it('translate a siple string', async () => {
+  it('translate a simple string', async () => {
     const sut = await helper.setupApp()
     const data = 'hello'
 
     const actual = sut.singleChoice(data)
 
     validate(actual)
+  })
+})
+
+describe('logger factory', () => {
+  it('creates a logger with 2 streams', async () => {
+    const logger = core.loggerFactory('some-index')
+    const actual =
+      logger[Reflect.ownKeys(logger).find((key) => key.toString() === 'Symbol(pino.stream)')]
+    expect(actual.streams).toBeDefined()
+    expect(actual.streams.length).toEqual(2)
+  })
+
+  it('creates a logger with 1 stream', async () => {
+    const logger = core.loggerFactory()
+    const actual =
+      logger[Reflect.ownKeys(logger).find((key) => key.toString() === 'Symbol(pino.stream)')]
+    expect(actual.streams).toBeDefined()
+    expect(actual.streams.length).toEqual(1)
   })
 })
