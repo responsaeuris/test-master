@@ -122,18 +122,21 @@ describe('single choice resource', () => {
 })
 
 describe('logger factory', () => {
+  const getLoggerStreams = (logger) =>
+    logger[Reflect.ownKeys(logger).find((key) => key.toString() === 'Symbol(pino.stream)')]
+
   it('creates a logger with 2 streams', async () => {
     const logger = core.loggerFactory('some-index')
-    const actual =
-      logger[Reflect.ownKeys(logger).find((key) => key.toString() === 'Symbol(pino.stream)')]
+    const actual = getLoggerStreams(logger)
+
     expect(actual.streams).toBeDefined()
     expect(actual.streams.length).toEqual(2)
   })
 
   it('creates a logger with 1 stream', async () => {
     const logger = core.loggerFactory()
-    const actual =
-      logger[Reflect.ownKeys(logger).find((key) => key.toString() === 'Symbol(pino.stream)')]
+    const actual = getLoggerStreams(logger)
+
     expect(actual.streams).toBeDefined()
     expect(actual.streams.length).toEqual(1)
   })
