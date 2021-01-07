@@ -26,7 +26,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@elastic/elasticsearch": "^7.10.0",
     "crypto-js": "^4.0.0",
     "csv-parser": "^3.0.0",
     "fastify": "^3.0.0",
