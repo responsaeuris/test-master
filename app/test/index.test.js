@@ -63,11 +63,16 @@ describe('options loading', () => {
   })
 
   it('loads x-log-index', async () => {
-    const actual = await getSwaggerInfo({ appName: 'some-app-name', apiVersion: 'v1' })
+    const actual = await getSwaggerInfo({ esIndex: 'some-index-name' })
 
-    expect(actual['x-log-index']).toEqual('some-app-name-v1')
+    expect(actual['x-log-index']).toEqual('some-index-name')
   })
 
+  it('loads x-log-index lower case', async () => {
+    const actual = await getSwaggerInfo({ esIndex: 'soMe-inDex-naMe' })
+
+    expect(actual['x-log-index']).toEqual('some-index-name')
+  })
   it('loads translations', async () => {
     const response = await getSwaggerInfo({
       translationsPath: path.join(__dirname, 'csv', 'valid-csv.csv'),

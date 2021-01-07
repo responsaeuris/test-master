@@ -26,6 +26,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@elastic/elasticsearch": "^7.10.0",
     "crypto-js": "^4.0.0",
     "csv-parser": "^3.0.0",
     "fastify": "^3.0.0",
@@ -41,7 +42,8 @@
     "node-fetch": "^2.6.1",
     "pino": "^6.9.0",
     "pino-applicationinsights": "^2.1.0",
-    "pino-elasticsearch": "^5.4.0"
+    "pino-elasticsearch": "^5.4.0",
+    "pino-multi-stream": "^5.1.1"
   },
   "devDependencies": {
     "eslint": "^7.2.0",
