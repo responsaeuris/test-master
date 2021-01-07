@@ -1,36 +1,15 @@
-const path = require('path')
 const helper = require('./helper')
 const core = require('..')
 
 describe('plugin registration', () => {
   it('should register the correct decorators', async () => {
-    expect.assertions(5)
+    expect.assertions(3)
 
     const sut = await helper.setupApp()
 
     expect(sut.coreStatus).toBeDefined()
     expect(sut.cache).toBeDefined()
-    expect(sut.getCsvData).toBeDefined()
-    expect(sut.getTranslations).toBeDefined()
     expect(sut.singleChoice).toBeDefined()
-  })
-})
-
-describe('cache', () => {
-  it('correctly loads translations into array', async () => {
-    const sut = await helper.setupApp()
-
-    const actual = await sut.getTranslations(path.join(__dirname, 'csv', 'valid-csv.csv'), false)
-    expect(actual).toBeInstanceOf(Array)
-    expect(actual.length).toEqual(2)
-  })
-
-  it('get empty array if app initialization has been made without translation file', async () => {
-    const sut = await helper.setupApp()
-
-    const actual = await sut.getTranslations(path.join(__dirname, 'csv', 'valid-csv.csv'), true)
-    expect(actual).toBeInstanceOf(Array)
-    expect(actual.length).toEqual(0)
   })
 })
 
@@ -76,7 +55,7 @@ describe('options loading', () => {
   })
   it('loads translations', async () => {
     const response = await getSwaggerInfo({
-      translationsPath: path.join(__dirname, 'csv', 'valid-csv.csv'),
+      translationsKeys: ['key1', 'key2'],
     })
 
     const actual = response['x-translations']
@@ -86,8 +65,8 @@ describe('options loading', () => {
 
     expect(actual.length).toEqual(2)
 
-    expect(actual[0]).toEqual('{{KEY_SELECT}}')
-    expect(actual[1]).toEqual('{{KEY_VIEW_DETAILS}}')
+    expect(actual[0]).toEqual('key1')
+    expect(actual[1]).toEqual('key2')
   })
 
   it('loads components with models schemas', async () => {

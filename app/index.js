@@ -6,10 +6,11 @@ const pino = require('pino')
 const pinoms = require('pino-multi-stream')
 const pinoElastic = require('pino-elasticsearch')
 const cache = require('./cache/cache')
-const csv = require('./csv/csv')
 const { status } = require('./routes/status/index')
 const { toSingle, ResponsaSingleChoiceResource } = require('./models/singleChoiceResource')
 const config = require('./config/constants')
+
+let translationsKeys = null
 
 const defaultOptions = {
   appName: 'Application Name',
@@ -19,17 +20,7 @@ const defaultOptions = {
     { url: 'server1 url', description: 'server1 description' },
     { url: 'server2 url', description: 'server2 description' },
   ],
-  translationsPath: '',
-}
-
-const csvParser = async (file) => csv(file).catch(() => null)
-
-const getCsvData = async (key, file, useCache = true) =>
-  useCache ? cache.get(key, () => csvParser(file)) : csvParser(file)
-
-const getTranslations = async (translationsPath, useCache = true) => {
-  const translations = await getCsvData('translations', translationsPath, useCache)
-  return translations ? translations.map((tr) => tr.TRANSLATION_KEYS) : []
+  translationsKeys: [],
 }
 
 const loggerFactory = (esIndex = null) => {
@@ -66,10 +57,10 @@ module.exports = fp(
       options: { ...opts },
     })
 
+    translationsKeys = options.translationsKeys
+
     f.decorate('coreStatus', status)
     f.decorate('cache', cache)
-    f.decorate('getCsvData', getCsvData)
-    f.decorate('getTranslations', getTranslations)
     f.decorate('singleChoice', toSingle)
     f.decorate('ResponsaSingleChoiceResource', ResponsaSingleChoiceResource)
 
@@ -78,7 +69,7 @@ module.exports = fp(
         info: {
           title: options.appName,
           version: options.apiVersion,
-          'x-translations': await getTranslations(options.translationsPath),
+          'x-translations': translationsKeys,
           'x-log-index': options.esIndex.toLowerCase(),
         },
         servers: options.servers,
