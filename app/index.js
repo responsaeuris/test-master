@@ -8,6 +8,7 @@ const pinoElastic = require('pino-elasticsearch')
 const cache = require('./cache/cache')
 const { status } = require('./routes/status/index')
 const { toSingle, ResponsaSingleChoiceResource } = require('./models/singleChoiceResource')
+const errorSchema = require('./models/error')
 const config = require('./config/constants')
 
 let translationsKeys = null
@@ -63,6 +64,7 @@ module.exports = fp(
     f.decorate('cache', cache)
     f.decorate('singleChoice', toSingle)
     f.decorate('ResponsaSingleChoiceResource', ResponsaSingleChoiceResource)
+    f.decorate('ErrorSchema', errorSchema)
 
     f.register(oas, {
       swagger: {
@@ -76,6 +78,7 @@ module.exports = fp(
         components: {
           schemas: {
             ResponsaSingleChoiceResource,
+            Error: errorSchema,
           },
         },
       },
