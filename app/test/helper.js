@@ -49,8 +49,12 @@ const addErrorRoutes = (app) => {
     throw new Error('Voluntary error')
   })
 
-  app.get('/invalid-response', { schema: responseSchema }, async (req, reply) => {
+  app.get('/invalid-response-schema', { schema: responseSchema }, async (req, reply) => {
     reply.send({ wrong_field: 'value' })
+  })
+
+  app.get('/valid-response-schema', { schema: responseSchema }, async (req, reply) => {
+    reply.send({ field: 'value' })
   })
 }
 
