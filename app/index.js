@@ -63,8 +63,6 @@ module.exports = fp(
     f.decorate('coreStatus', status)
     f.decorate('cache', cache)
     f.decorate('singleChoice', toSingle)
-    f.decorate('ResponsaSingleChoiceResource', ResponsaSingleChoiceResource)
-    f.decorate('ErrorSchema', errorSchema)
 
     f.register(oas, {
       swagger: {
@@ -91,4 +89,5 @@ module.exports = fp(
 )
 
 module.exports.loggerFactory = loggerFactory
+module.exports.errorSchema = errorSchema
 module.exports.ResponsaSingleChoiceResource = ResponsaSingleChoiceResource
