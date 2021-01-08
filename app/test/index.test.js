@@ -1,35 +1,15 @@
-const path = require('path')
 const helper = require('./helper')
+const core = require('..')
 
 describe('plugin registration', () => {
   it('should register the correct decorators', async () => {
-    expect.assertions(5)
+    expect.assertions(3)
 
     const sut = await helper.setupApp()
 
     expect(sut.coreStatus).toBeDefined()
     expect(sut.cache).toBeDefined()
-    expect(sut.getCsvData).toBeDefined()
-    expect(sut.getTranslations).toBeDefined()
     expect(sut.singleChoice).toBeDefined()
-  })
-})
-
-describe('cache', () => {
-  it('correctly loads translations into array', async () => {
-    const sut = await helper.setupApp()
-
-    const actual = await sut.getTranslations(path.join(__dirname, 'csv', 'valid-csv.csv'), false)
-    expect(actual).toBeInstanceOf(Array)
-    expect(actual.length).toEqual(2)
-  })
-
-  it('get empty array if app initialization has been made without translation file', async () => {
-    const sut = await helper.setupApp()
-
-    const actual = await sut.getTranslations(path.join(__dirname, 'csv', 'valid-csv.csv'), true)
-    expect(actual).toBeInstanceOf(Array)
-    expect(actual.length).toEqual(0)
   })
 })
 
@@ -63,14 +43,19 @@ describe('options loading', () => {
   })
 
   it('loads x-log-index', async () => {
-    const actual = await getSwaggerInfo({ appName: 'some-app-name', apiVersion: 'v1' })
+    const actual = await getSwaggerInfo({ esIndex: 'some-index-name' })
 
-    expect(actual['x-log-index']).toEqual('some-app-name-v1')
+    expect(actual['x-log-index']).toEqual('some-index-name')
   })
 
+  it('loads x-log-index lower case', async () => {
+    const actual = await getSwaggerInfo({ esIndex: 'soMe-inDex-naMe' })
+
+    expect(actual['x-log-index']).toEqual('some-index-name')
+  })
   it('loads translations', async () => {
     const response = await getSwaggerInfo({
-      translationsPath: path.join(__dirname, 'csv', 'valid-csv.csv'),
+      translationsKeys: ['key1', 'key2'],
     })
 
     const actual = response['x-translations']
@@ -80,8 +65,8 @@ describe('options loading', () => {
 
     expect(actual.length).toEqual(2)
 
-    expect(actual[0]).toEqual('{{KEY_SELECT}}')
-    expect(actual[1]).toEqual('{{KEY_VIEW_DETAILS}}')
+    expect(actual[0]).toEqual('key1')
+    expect(actual[1]).toEqual('key2')
   })
 
   it('loads components with models schemas', async () => {
@@ -99,18 +84,39 @@ describe('options loading', () => {
   })
 })
 
-describe('single choice resouce', () => {
+describe('single choice resource', () => {
   const validate = (output) => {
     expect(output.text).toBeDefined()
     expect(output.payload).toBeDefined()
   }
 
-  it('translate a siple string', async () => {
+  it('translate a simple string', async () => {
     const sut = await helper.setupApp()
     const data = 'hello'
 
     const actual = sut.singleChoice(data)
 
     validate(actual)
+  })
+})
+
+describe('logger factory', () => {
+  const getLoggerStreams = (logger) =>
+    logger[Reflect.ownKeys(logger).find((key) => key.toString() === 'Symbol(pino.stream)')]
+
+  it('creates a logger with 2 streams', async () => {
+    const logger = core.loggerFactory('some-index')
+    const actual = getLoggerStreams(logger)
+
+    expect(actual.streams).toBeDefined()
+    expect(actual.streams.length).toEqual(2)
+  })
+
+  it('creates a logger with 1 stream', async () => {
+    const logger = core.loggerFactory()
+    const actual = getLoggerStreams(logger)
+
+    expect(actual.streams).toBeDefined()
+    expect(actual.streams.length).toEqual(1)
   })
 })

@@ -69,7 +69,7 @@ module.exports.ResponsaSingleChoiceResource = {
     },
     payload: {
       type: 'object',
-      additionalProperties: false,
+      additionalProperties: true,
     },
     description: {
       type: 'string',
