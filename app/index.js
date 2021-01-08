@@ -59,9 +59,9 @@ module.exports = fp(
       options: { ...opts },
     })
 
-    f.addHook('onRequest', (request, reply, next) => {
-      if (!request.url.contains('/documentation')) checkHeaders(request.headers)
-      next()
+    f.addHook('onRequest', (request, reply, done) => {
+      if (!request.url.includes('/documentation')) checkHeaders(request.headers)
+      done()
     })
 
     f.decorate('coreStatus', status)

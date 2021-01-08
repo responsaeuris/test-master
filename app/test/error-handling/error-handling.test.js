@@ -1,21 +1,30 @@
 const helper = require('../helper')
 
+const requiredHeaders = {
+  conversationId: 4,
+  responsaTS: 12312315648974,
+}
+
 describe('error handling', () => {
   it('400 - answers with an error with invalid querystring', async () => {
     const sut = await helper.setupApp()
-    const response = await helper.doGet(sut, '/required-querystring-param')
+    const response = await helper.doGet(sut, '/required-querystring-param', requiredHeaders)
     expect(response.statusCode).toEqual(400)
   })
 
   it('200 - answers with an ok with valid querystring', async () => {
     const sut = await helper.setupApp()
-    const response = await helper.doGet(sut, '/required-querystring-param?param1=1')
+    const response = await helper.doGet(
+      sut,
+      '/required-querystring-param?param1=1',
+      requiredHeaders
+    )
     expect(response.statusCode).toEqual(200)
   })
 
   it('500 - answers with an error with unhandled exception', async () => {
     const sut = await helper.setupApp()
-    const response = await helper.doGet(sut, '/throws-error')
+    const response = await helper.doGet(sut, '/throws-error', requiredHeaders)
     expect(response.statusCode).toEqual(500)
     expect(response.payload).toEqual(
       '{"statusCode":500,"error":"Internal Server Error","message":"Voluntary error"}'
@@ -23,7 +32,7 @@ describe('error handling', () => {
   })
   it('404 on invalid route', async () => {
     const sut = await helper.setupApp()
-    const response = await helper.doGet(sut, '/non-existant')
+    const response = await helper.doGet(sut, '/non-existant', requiredHeaders)
     expect(response.statusCode).toEqual(404)
     expect(response.payload).toEqual(
       '{"message":"Route GET:/non-existant not found","error":"Not Found","statusCode":404}'
@@ -32,14 +41,14 @@ describe('error handling', () => {
 
   it('answers with an error with invalid response', async () => {
     const sut = await helper.setupApp()
-    const response = await helper.doGet(sut, '/invalid-response-schema')
+    const response = await helper.doGet(sut, '/invalid-response-schema', requiredHeaders)
     expect(response.statusCode).toEqual(200)
     expect(response.payload).toEqual('{}')
   })
 
   it('answers with an error with invalid response', async () => {
     const sut = await helper.setupApp()
-    const response = await helper.doGet(sut, '/valid-response-schema')
+    const response = await helper.doGet(sut, '/valid-response-schema', requiredHeaders)
     expect(response.statusCode).toEqual(200)
     expect(response.payload).toEqual('{"field":"value"}')
   })
@@ -48,10 +57,7 @@ describe('error handling', () => {
 describe('responsa headers', () => {
   it('200 with correct responsa headers', async () => {
     const sut = await helper.setupApp()
-    const response = await helper.doGet(sut, '/valid-response-schema', {
-      conversationId: 'some-value',
-      responsaTS: 'tbd',
-    })
+    const response = await helper.doGet(sut, '/valid-response-schema', requiredHeaders)
     expect(response.statusCode).toEqual(200)
   })
 

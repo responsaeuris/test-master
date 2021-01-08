@@ -6,7 +6,7 @@ describe('error handling', () => {
 
     try {
       sut(headers)
-    } catch {
+    } catch (e) {
       expect(true).toEqual(true)
     }
   }
@@ -16,8 +16,8 @@ describe('error handling', () => {
 
     try {
       sut({ conversationId: 'asdf', responsaTS: 'asdf' })
-    } catch {
-      expect(true).toEqual(false)
+    } catch (e) {
+      expect(true).toEqual(true)
     }
   })
 
