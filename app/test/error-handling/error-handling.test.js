@@ -44,3 +44,23 @@ describe('error handling', () => {
     expect(response.payload).toEqual('{"field":"value"}')
   })
 })
+
+describe('responsa headers', () => {
+  it('200 with correct responsa headers', async () => {
+    const sut = await helper.setupApp()
+    const response = await helper.doGet(sut, '/valid-response-schema', {
+      conversationId: 'some-value',
+      responsaTS: 'tbd',
+    })
+    expect(response.statusCode).toEqual(200)
+  })
+
+  // it('400 w/o conversationId', async () => {
+  //   const sut = await helper.setupApp()
+  //   const response = await helper.doGet(sut, '/valid-response-schema', { responsaTS: 'tbd' })
+  //   expect(response.statusCode).toEqual(400)
+  // })
+
+  // TODO timestamp formatting
+  // TODO clientTS
+})

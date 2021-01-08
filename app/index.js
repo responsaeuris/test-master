@@ -10,6 +10,7 @@ const { status } = require('./routes/status/index')
 const { toSingle, ResponsaSingleChoiceResource } = require('./models/singleChoiceResource')
 const errorSchema = require('./models/error')
 const config = require('./config/constants')
+const checkHeaders = require('./filters/requiredHeaders')
 
 let translationsKeys = null
 
@@ -58,11 +59,16 @@ module.exports = fp(
       options: { ...opts },
     })
 
-    translationsKeys = options.translationsKeys
+    f.addHook('onRequest', (request, reply, next) => {
+      if (!request.url.contains('/documentation')) checkHeaders(request.headers)
+      next()
+    })
 
     f.decorate('coreStatus', status)
     f.decorate('cache', cache)
     f.decorate('singleChoice', toSingle)
+
+    translationsKeys = options.translationsKeys
 
     f.register(oas, {
       swagger: {
