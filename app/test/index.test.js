@@ -170,4 +170,16 @@ describe('log filtering', () => {
     }
     getCalled(['hello world'], cb)
   })
+
+  it('skips error responseTime', () => {
+    const error = { res: { statusCode: 500 }, err: {} }
+    const cb = (data) => {
+      expect(data).toEqual(error)
+    }
+    getCalled([error], cb)
+  })
+
+  it('skips error responseTime', () => {
+    notCalled([{ res: { statusCode: 500 } }])
+  })
 })

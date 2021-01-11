@@ -10,6 +10,10 @@ app.get('/', async (req, reply) => {
   reply.send(await app.coreStatus())
 })
 
+app.get('/throws-error', async () => {
+  throw new Error('voluntary error')
+})
+
 app.listen(process.env.PORT || 3100)
 
 // CLIENT
