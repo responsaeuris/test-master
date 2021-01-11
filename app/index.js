@@ -36,9 +36,7 @@ const loggerFilter = (input) => {
 const loggerFactory = (esIndex = null) => {
   const streams = [{ stream: process.stdout }]
   const hooks = {
-    logMethod(inputArgs, method, level) {
-      // console.log(inputArgs, method, level)
-
+    logMethod(inputArgs, method) {
       const data = loggerFilter(inputArgs)
       if (data) return method.apply(this, inputArgs)
       return null
