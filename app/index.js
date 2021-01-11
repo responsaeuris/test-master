@@ -37,12 +37,9 @@ const loggerFactory = (esIndex = null) => {
     logMethod(inputArgs, method, level) {
       // console.log(inputArgs, method, level)
 
-      if (inputArgs.length >= 2) {
-        const arg1 = inputArgs.shift()
-        const arg2 = inputArgs.shift()
-        return method.apply(this, [arg2, arg1, ...inputArgs])
-      }
-      return method.apply(this, inputArgs)
+      const data = loggerFilter(inputArgs)
+      if (data) return method.apply(this, inputArgs)
+      return null
     },
   }
 
