@@ -45,7 +45,6 @@ const loggerFactory = (esIndex = null) => {
   }
 
   const logger = pino({ level: 'info' }, pinoms.multistream(streams))
-  logger.info(`core logger built with ${streams.length} streams`)
   return logger
 }
 

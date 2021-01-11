@@ -8,7 +8,7 @@
     "test": "test"
   },
   "scripts": {
-    "do_not_run": "echo \"updating outher package.json\" && npm i shx && shx cp package.json ../package.json && echo \"Done!\"",
+    "do_not_run": "echo \"updating outer package.json\" && npm i shx && shx cp package.json ../package.json && echo \"Done!\"",
     "do_not_run2": "shx sed -i \"s/do_not_run/do_not_run/g\" ../package.json && shx sed -i \"s/do_not_run2/do_not_run2/g\" ../package.json",
     "test": "npm run lint && npm run jest",
     "lint": "eslint . test/. --config .eslintrc.json --fix --max-warnings=10",
@@ -28,6 +28,7 @@
   "dependencies": {
     "fastify": "^3.0.0",
     "fastify-autoload": "^3.0.2",
+    "fastify-error": "^0.2.0",
     "fastify-oas": "^3.0.8",
     "fastify-plugin": "^3.0.0",
     "fastify-swagger": "^3.5.0",
