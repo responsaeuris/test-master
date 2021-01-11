@@ -25,8 +25,27 @@ const defaultOptions = {
   translationsKeys: [],
 }
 
+const loggerFilter = (input) => {
+  const data = input[0] || []
+  if (typeof data === 'string' || data.res) return data
+  return null
+}
+
 const loggerFactory = (esIndex = null) => {
   const streams = [{ stream: process.stdout }]
+  const hooks = {
+    logMethod(inputArgs, method, level) {
+      // console.log(inputArgs, method, level)
+
+      if (inputArgs.length >= 2) {
+        const arg1 = inputArgs.shift()
+        const arg2 = inputArgs.shift()
+        return method.apply(this, [arg2, arg1, ...inputArgs])
+      }
+      return method.apply(this, inputArgs)
+    },
+  }
+
   if (esIndex) {
     streams.push({
       stream: pinoElastic({
@@ -44,7 +63,7 @@ const loggerFactory = (esIndex = null) => {
     })
   }
 
-  const logger = pino({ level: 'info' }, pinoms.multistream(streams))
+  const logger = pino({ level: 'info', hooks }, pinoms.multistream(streams))
   return logger
 }
 
@@ -105,5 +124,6 @@ module.exports = fp(
 )
 
 module.exports.loggerFactory = loggerFactory
+module.exports.loggerFilter = loggerFilter
 module.exports.errorSchema = errorSchema
 module.exports.ResponsaSingleChoiceResource = ResponsaSingleChoiceResource
