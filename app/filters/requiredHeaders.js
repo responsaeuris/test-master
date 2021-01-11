@@ -1,10 +1,18 @@
 module.exports = (headers) => {
-  const isConversationIdOk = Object.getOwnPropertyNames(headers).filter(
+  const ConversationIdKey = Object.getOwnPropertyNames(headers).filter(
     (key) => key.toLowerCase() === 'conversationid'
   )
-  const isResponsaTsOk = Object.getOwnPropertyNames(headers).filter(
+  const ResponsaTsKey = Object.getOwnPropertyNames(headers).filter(
     (key) => key.toLowerCase() === 'responsats'
   )
-  if (isConversationIdOk.length === 0) throw new Error('asdf')
-  if (isResponsaTsOk.length === 0) throw new Error('asdf')
+  if (ConversationIdKey.length === 0)
+    throw new Error('Missing required "ConversationId" request header')
+  if (ResponsaTsKey.length === 0) throw new Error('Missing required "ResponsaTS" request header')
+
+  const convId = parseInt(headers[ConversationIdKey], 10)
+  if (Number.isNaN(convId)) throw new Error('"ConversationId" request header must be a number')
+
+  const resTS = parseFloat(headers[ResponsaTsKey], 10)
+  if (Number.isNaN(resTS))
+    throw new Error('"ResponsaTS" request header must be a a valid timestamp')
 }
