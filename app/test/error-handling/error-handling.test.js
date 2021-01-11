@@ -1,3 +1,4 @@
+require('jest-extended')
 const helper = require('../helper')
 
 const requiredHeaders = {
@@ -61,12 +62,29 @@ describe('responsa headers', () => {
     expect(response.statusCode).toEqual(200)
   })
 
-  // it('400 w/o conversationId', async () => {
-  //   const sut = await helper.setupApp()
-  //   const response = await helper.doGet(sut, '/valid-response-schema', { responsaTS: 'tbd' })
-  //   expect(response.statusCode).toEqual(400)
-  // })
+  it('400 w/o conversationId', async () => {
+    const sut = await helper.setupApp()
+    const response = await helper.doGet(sut, '/valid-response-schema', { responsaTS: Date.now() })
+    expect(response.statusCode).toEqual(400)
+  })
+
+  it('400 w/o responsaTS', async () => {
+    const sut = await helper.setupApp()
+    const response = await helper.doGet(sut, '/valid-response-schema', { conversationId: '55' })
+    expect(response.statusCode).toEqual(400)
+  })
 
   // TODO timestamp formatting
-  // TODO clientTS
+
+  it('answers with all three headers', async () => {
+    const sut = await helper.setupApp()
+    const response = await helper.doGet(sut, '/valid-response-schema', requiredHeaders)
+    expect(response.statusCode).toEqual(200)
+    expect(response.raw.res.getHeader('conversationId')).toEqual(
+      requiredHeaders.conversationId.toString()
+    )
+    expect(response.raw.res.getHeader('responsaTS')).toEqual(requiredHeaders.responsaTS.toString())
+    expect(response.raw.res.getHeader('clientTS')).toBeDefined()
+    expect(response.raw.res.getHeader('clientTS')).toBeNumber()
+  })
 })

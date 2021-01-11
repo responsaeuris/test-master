@@ -63,6 +63,17 @@ module.exports = fp(
       done()
     })
 
+    f.addHook('onSend', (request, reply, payload, done) => {
+      if (!request.url.includes('/documentation')) {
+        if (!reply.raw.getHeader('conversationId'))
+          reply.raw.setHeader('conversationId', request.headers.conversationid)
+        if (!reply.raw.getHeader('responsaTS'))
+          reply.raw.setHeader('responsaTS', request.headers.responsats)
+        reply.raw.setHeader('clientTS', Date.now())
+      }
+      done()
+    })
+
     f.decorate('coreStatus', status)
     f.decorate('cache', cache)
     f.decorate('singleChoice', toSingle)
