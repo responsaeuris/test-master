@@ -81,11 +81,17 @@ module.exports = fp(
 
     f.addHook('onSend', (request, reply, payload, done) => {
       if (!request.url.includes('/documentation')) {
-        if (!reply.raw.getHeader('conversationId'))
-          reply.raw.setHeader('conversationId', request.headers.conversationid)
-        if (!reply.raw.getHeader('responsaTS'))
-          reply.raw.setHeader('responsaTS', request.headers.responsats)
-        reply.raw.setHeader('clientTS', Date.now())
+        if (!reply.raw.getHeader(config.HEADER_CONVERSATION_ID))
+          reply.raw.setHeader(
+            config.HEADER_CONVERSATION_ID,
+            request.headers[config.HEADER_CONVERSATION_ID.toLowerCase()]
+          )
+        if (!reply.raw.getHeader(config.HEADER_RESPONSA_TS))
+          reply.raw.setHeader(
+            config.HEADER_RESPONSA_TS,
+            request.headers[config.HEADER_RESPONSA_TS.toLowerCase()]
+          )
+        reply.raw.setHeader(config.HEADER_CLIENT_TS, Date.now())
       }
       done()
     })

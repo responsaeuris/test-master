@@ -2,8 +2,8 @@ require('jest-extended')
 const helper = require('../helper')
 
 const requiredHeaders = {
-  conversationId: 4,
-  responsaTS: 12312315648974,
+  'X-ConversationId': 4,
+  'X-ResponsaTS': 12312315648974,
 }
 
 describe('error handling', () => {
@@ -64,13 +64,15 @@ describe('responsa headers', () => {
 
   it('400 w/o conversationId', async () => {
     const sut = await helper.setupApp()
-    const response = await helper.doGet(sut, '/valid-response-schema', { responsaTS: Date.now() })
+    const response = await helper.doGet(sut, '/valid-response-schema', {
+      'X-ResponsaTS': Date.now(),
+    })
     expect(response.statusCode).toEqual(400)
   })
 
   it('400 w/o responsaTS', async () => {
     const sut = await helper.setupApp()
-    const response = await helper.doGet(sut, '/valid-response-schema', { conversationId: '55' })
+    const response = await helper.doGet(sut, '/valid-response-schema', { 'X-ConversationId': '55' })
     expect(response.statusCode).toEqual(400)
   })
 
@@ -80,11 +82,13 @@ describe('responsa headers', () => {
     const sut = await helper.setupApp()
     const response = await helper.doGet(sut, '/valid-response-schema', requiredHeaders)
     expect(response.statusCode).toEqual(200)
-    expect(response.raw.res.getHeader('conversationId')).toEqual(
-      requiredHeaders.conversationId.toString()
+    expect(response.raw.res.getHeader('X-ConversationId')).toEqual(
+      requiredHeaders['X-ConversationId'].toString()
     )
-    expect(response.raw.res.getHeader('responsaTS')).toEqual(requiredHeaders.responsaTS.toString())
-    expect(response.raw.res.getHeader('clientTS')).toBeDefined()
-    expect(response.raw.res.getHeader('clientTS')).toBeNumber()
+    expect(response.raw.res.getHeader('X-ResponsaTS')).toEqual(
+      requiredHeaders['X-ResponsaTS'].toString()
+    )
+    expect(response.raw.res.getHeader('X-ClientTS')).toBeDefined()
+    expect(response.raw.res.getHeader('X-ClientTS')).toBeNumber()
   })
 })

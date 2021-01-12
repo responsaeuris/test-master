@@ -15,31 +15,31 @@ describe('error handling', () => {
     expect.assertions(0)
 
     try {
-      sut({ conversationId: '4', responsaTS: Date.now() })
+      sut({ 'X-ConversationId': '4', 'X-ResponsaTS': Date.now() })
     } catch (e) {
       expect(true).toEqual(true)
     }
   })
 
   it('throws if responsaTS is missing', () => {
-    fails({ conversationId: '4' }, 'Missing required "ResponsaTS" request header')
+    fails({ 'X-ConversationId': '4' }, 'Missing required "X-ResponsaTS" request header')
   })
 
   it('throws if conversationId is missing', () => {
-    fails({ responsaTS: Date.now() }, 'Missing required "ConversationId" request header')
+    fails({ 'X-ResponsaTS': Date.now() }, 'Missing required "X-ConversationId" request header')
   })
 
   it('throws if conversationId has wrong type', () => {
     fails(
-      { conversationId: 'invalid-value', responsaTS: Date.now() },
-      '"ConversationId" request header must be a number'
+      { 'X-ConversationId': 'invalid-value', 'X-ResponsaTS': Date.now() },
+      '"X-ConversationId" request header must be a number'
     )
   })
 
   it('throws if responsaTS has wrong type', () => {
     fails(
-      { conversationId: '4', responsaTS: 'invalid-value' },
-      '"ResponsaTS" request header must be a a valid timestamp'
+      { 'X-ConversationId': '4', 'X-ResponsaTS': 'invalid-value' },
+      '"X-ResponsaTS" request header must be a a valid timestamp'
     )
   })
 })
