@@ -104,6 +104,8 @@ module.exports = fp(
           'x-translations': translationsKeys,
           'x-log-index': options.esIndex.toLowerCase(),
         },
+        consumes: ['application/json'],
+        produces: ['application/json'],
         servers: options.servers,
         components: {
           schemas: {
@@ -113,6 +115,8 @@ module.exports = fp(
         },
       },
       exposeRoute: true,
+      openapi: '3.0.3',
+      addModels: true,
     })
 
     next()
