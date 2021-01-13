@@ -33,21 +33,13 @@ module.exports.toRich = (data, converter) => {
 }
 
 module.exports.ResponsaRichMessageResource = {
-  required: ['payload', 'text'],
+  required: ['text'],
   type: 'object',
   properties: {
     text: {
       type: 'string',
     },
-    payload: {
-      type: 'object',
-      additionalProperties: true,
-    },
     description: {
-      type: 'string',
-      nullable: true,
-    },
-    action_title: {
       type: 'string',
       nullable: true,
     },

@@ -47,67 +47,100 @@ describe('results', () => {
 
     expect(actual.gallery_urls).toEqual([])
   })
+})
 
-  describe('invalid convertions', () => {
-    const defaultInput = {
-      prop: { value: 'some-value' },
-      p: { someKey: 'another-value' },
+describe('invalid convertions', () => {
+  const defaultInput = {
+    prop: { value: 'some-value' },
+    p: { someKey: 'another-value' },
+  }
+
+  const doCheck = (converter, expectedErrorMsg, input = defaultInput) => {
+    expect.assertions(1)
+
+    try {
+      sut.toRich(input, converter)
+    } catch (e) {
+      expect(e.toString()).toEqual(expectedErrorMsg)
     }
+  }
 
-    const doCheck = (converter, expectedErrorMsg, input = defaultInput) => {
-      expect.assertions(1)
-
-      try {
-        sut.toRich(input, converter)
-      } catch (e) {
-        expect(e.toString()).toEqual(expectedErrorMsg)
-      }
-    }
-
-    describe('text', () => {
-      it('missing property', () => {
-        const converter = (data) => ({ missing_text: data.prop.value, payload: data.p })
-        doCheck(converter, "Error: invalid converter missing 'text' property convertion")
-      })
-
-      it('wrong dataType', () => {
-        const converter = (data) => ({ text: data.prop, payload: data.p })
-        doCheck(converter, "Error: invalid converter 'text' property is not a string")
-      })
+  describe('text', () => {
+    it('missing property', () => {
+      const converter = (data) => ({ missing_text: data.prop.value, payload: data.p })
+      doCheck(converter, "Error: invalid converter missing 'text' property convertion")
     })
 
-    describe('additional properties', () => {
-      it('checks description', () => {
-        const converter = (data) => ({ text: data.prop.value, payload: data.p, description: data })
-        doCheck(converter, "Error: invalid converter 'description' is not a string")
-      })
-
-      it('checks image_url', () => {
-        const converter = (data) => ({
-          text: data.prop.value,
-          payload: data.p,
-          image_url: data,
-        })
-        doCheck(converter, "Error: invalid converter 'image_url' is not a string")
-      })
-
-      it('checks gallery_urls', () => {
-        const converter = (data) => ({
-          text: data.prop.value,
-          payload: data.p,
-          gallery_urls: data,
-        })
-        doCheck(converter, "Error: invalid converter 'gallery_urls' is not an array of strings")
-      })
-
-      it('checks each gallery_urls', () => {
-        const converter = (data) => ({
-          text: data.prop.value,
-          payload: data.p,
-          gallery_urls: ['string-here', data.p],
-        })
-        doCheck(converter, "Error: invalid converter 'gallery_urls' is not an array of strings")
-      })
+    it('wrong dataType', () => {
+      const converter = (data) => ({ text: data.prop, payload: data.p })
+      doCheck(converter, "Error: invalid converter 'text' property is not a string")
     })
+  })
+
+  describe('additional properties', () => {
+    it('checks description', () => {
+      const converter = (data) => ({ text: data.prop.value, payload: data.p, description: data })
+      doCheck(converter, "Error: invalid converter 'description' is not a string")
+    })
+
+    it('checks image_url', () => {
+      const converter = (data) => ({
+        text: data.prop.value,
+        payload: data.p,
+        image_url: data,
+      })
+      doCheck(converter, "Error: invalid converter 'image_url' is not a string")
+    })
+
+    it('checks gallery_urls', () => {
+      const converter = (data) => ({
+        text: data.prop.value,
+        payload: data.p,
+        gallery_urls: data,
+      })
+      doCheck(converter, "Error: invalid converter 'gallery_urls' is not an array of strings")
+    })
+
+    it('checks each gallery_urls', () => {
+      const converter = (data) => ({
+        text: data.prop.value,
+        payload: data.p,
+        gallery_urls: ['string-here', data.p],
+      })
+      doCheck(converter, "Error: invalid converter 'gallery_urls' is not an array of strings")
+    })
+  })
+})
+
+describe('model validation', () => {
+  it('exposes EXACTLY this model', () => {
+    const expected = {
+      required: ['text'],
+      type: 'object',
+      properties: {
+        text: {
+          type: 'string',
+        },
+        description: {
+          type: 'string',
+          nullable: true,
+        },
+        image_url: {
+          type: 'string',
+          nullable: true,
+        },
+        gallery_urls: {
+          type: 'array',
+          items: {
+            type: 'string',
+          },
+          nullable: true,
+        },
+      },
+    }
+
+    const actual = sut.ResponsaRichMessageResource
+
+    expect(actual).toEqual(expected)
   })
 })
