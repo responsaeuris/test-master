@@ -1,6 +1,6 @@
 const sut = require('../../models/singleChoice')
 
-describe('results', () => {
+describe('singleChoice results', () => {
   it('spits a single choice', () => {
     const actual = sut.toSingle('hi')
 
@@ -53,7 +53,7 @@ describe('results', () => {
   })
 })
 
-describe('invalid convertions', () => {
+describe('singleChoice invalid convertions', () => {
   const defaultInput = {
     prop: { value: 'some-value' },
     p: { someKey: 'another-value' },
@@ -69,7 +69,7 @@ describe('invalid convertions', () => {
     }
   }
 
-  describe('text', () => {
+  describe('singleChoice text', () => {
     it('missing property', () => {
       const converter = (data) => ({ missing_text: data.prop.value, payload: data.p })
       doCheck(converter, "Error: invalid converter missing 'text' property convertion")
@@ -81,7 +81,7 @@ describe('invalid convertions', () => {
     })
   })
 
-  describe('payload', () => {
+  describe('singleChoice payload', () => {
     it('missing property', () => {
       const converter = (data) => ({ text: data.prop.value, no_payload: data.p })
       doCheck(converter, "Error: invalid converter missing 'payload' property convertion")
@@ -93,51 +93,49 @@ describe('invalid convertions', () => {
     })
   })
 
-  describe('additional properties', () => {
-    it('checks description', () => {
-      const converter = (data) => ({ text: data.prop.value, payload: data.p, description: data })
-      doCheck(converter, "Error: invalid converter 'description' is not a string")
-    })
+  it('checks description', () => {
+    const converter = (data) => ({ text: data.prop.value, payload: data.p, description: data })
+    doCheck(converter, "Error: invalid converter 'description' is not a string")
+  })
 
-    it('checks action_title', () => {
-      const converter = (data) => ({
-        text: data.prop.value,
-        payload: data.p,
-        action_title: data,
-      })
-      doCheck(converter, "Error: invalid converter 'action_title' is not a string")
+  it('checks action_title', () => {
+    const converter = (data) => ({
+      text: data.prop.value,
+      payload: data.p,
+      action_title: data,
     })
+    doCheck(converter, "Error: invalid converter 'action_title' is not a string")
+  })
 
-    it('checks image_url', () => {
-      const converter = (data) => ({
-        text: data.prop.value,
-        payload: data.p,
-        image_url: data,
-      })
-      doCheck(converter, "Error: invalid converter 'image_url' is not a string")
+  it('checks image_url', () => {
+    const converter = (data) => ({
+      text: data.prop.value,
+      payload: data.p,
+      image_url: data,
     })
+    doCheck(converter, "Error: invalid converter 'image_url' is not a string")
+  })
 
-    it('checks gallery_urls', () => {
-      const converter = (data) => ({
-        text: data.prop.value,
-        payload: data.p,
-        gallery_urls: data,
-      })
-      doCheck(converter, "Error: invalid converter 'gallery_urls' is not an array of strings")
+  it('checks gallery_urls', () => {
+    const converter = (data) => ({
+      text: data.prop.value,
+      payload: data.p,
+      gallery_urls: data,
     })
+    doCheck(converter, "Error: invalid converter 'gallery_urls' is not an array of strings")
+  })
 
-    it('checks each gallery_urls', () => {
-      const converter = (data) => ({
-        text: data.prop.value,
-        payload: data.p,
-        gallery_urls: ['string-here', data.p],
-      })
-      doCheck(converter, "Error: invalid converter 'gallery_urls' is not an array of strings")
+  it('checks each gallery_urls', () => {
+    const converter = (data) => ({
+      text: data.prop.value,
+      payload: data.p,
+      gallery_urls: ['string-here', data.p],
     })
+    doCheck(converter, "Error: invalid converter 'gallery_urls' is not an array of strings")
   })
 })
 
-describe('model validation', () => {
+describe('singleChoice model validation', () => {
   it('exposes EXACTLY this model', () => {
     const expected = {
       required: ['payload', 'text'],
