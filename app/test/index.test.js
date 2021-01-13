@@ -1,3 +1,4 @@
+require('jest-extended')
 const helper = require('./helper')
 const core = require('..')
 
@@ -181,5 +182,58 @@ describe('log filtering', () => {
 
   it('skips error responseTime', () => {
     notCalled([{ res: { statusCode: 500 } }])
+  })
+})
+
+describe('Logger Formatter', () => {
+  const requiredHeaders = {
+    'X-ConversationId': 4,
+    'X-ResponsaTS': 12312315648974,
+  }
+  it('logs message with res, req and elapsed', async () => {
+    const qry = 'param1=1'
+    const app = await helper.setupApp()
+    const response = await helper.doGet(
+      app,
+      `/required-querystring-param-and-response?${qry}`,
+      requiredHeaders
+    )
+    response.raw.req.query = qry
+    const sut = core.loggerFormatter
+    const actual = sut(response.raw.req, response.raw.res, null, 1.98975)
+    expect(actual).toBeDefined()
+    expect(actual.conversationId).toBeDefined()
+    expect(actual.responsaTS).toBeDefined()
+    expect(actual.clientTS).toBeDefined()
+    expect(actual.requestBody).toBeDefined()
+    expect(actual.requestBody).toEqual('')
+    expect(actual.requestHasBody).toBeDefined()
+    expect(actual.requestHasBody).toBeBoolean()
+    expect(actual.requestHasBody).toBeFalse()
+    expect(actual.requestIsHttps).toBeDefined()
+    expect(actual.requestIsHttps).toBeBoolean()
+    expect(actual.requestContentLength).toBeDefined()
+    expect(actual.requestQueryString).toBeDefined()
+    expect(actual.requestQueryString).toEqual(qry)
+    expect(actual.requestQueryStringHasValue).toBeDefined()
+    expect(actual.requestQueryStringHasValue).toBeTrue()
+    expect(actual.requestHeaders).toBeDefined()
+    expect(actual.requestHeaders).toBeObject()
+    expect(actual.responseBody).toBeDefined()
+    expect(actual.responseBody).toEqual('{"field":"value"}')
+    expect(actual.responseHasBody).toBeDefined()
+    expect(actual.responseHasBody).toBeTrue()
+    expect(actual.RequestMethod).toBeDefined()
+    expect(actual.RequestMethod).toEqual('GET')
+    expect(actual.RequestPath).toBeDefined()
+    expect(actual.RequestPath).toEqual(`/required-querystring-param-and-response?${qry}`)
+    expect(actual.StatusCode).toBeDefined()
+    expect(actual.StatusCode).toEqual(200)
+    expect(actual.Elapsed).toBeDefined()
+    expect(actual.Elapsed).toEqual(1.98975)
+    expect(actual.exceptionMessage).toBeDefined()
+    expect(actual.exceptionMessage).toEqual('')
+    expect(actual.exceptionStackTrace).toBeDefined()
+    expect(actual.exceptionStackTrace).toEqual('')
   })
 })

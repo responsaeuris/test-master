@@ -46,6 +46,14 @@ const addErrorRoutes = (app) => {
     }
   )
 
+  app.get(
+    '/required-querystring-param-and-response',
+    { schema: { ...mandatoryQueryParamSchema, ...responseSchema } },
+    async (req, reply) => {
+      reply.code(200).send({ field: 'value' })
+    }
+  )
+
   app.get('/throws-error', async () => {
     throw new Error('Voluntary error')
   })

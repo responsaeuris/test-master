@@ -14,6 +14,8 @@ const checkHeaders = require('./filters/requiredHeaders')
 
 let translationsKeys = null
 
+const isEmptyObject = (obj) => Object.keys(obj).length === 0 && typeof obj === 'object'
+
 const defaultOptions = {
   appName: 'Application Name',
   apiVersion: 'v1',
@@ -33,13 +35,52 @@ const loggerFilter = (input) => {
   return null
 }
 
+const loggerFormatter = (req, res, err, elapsed) => ({
+  conversationId: req.headers[config.HEADER_CONVERSATION_ID.toLowerCase()],
+  responsaTS: req.headers[config.HEADER_RESPONSA_TS.toLowerCase()],
+  clientTS: res.getHeader(config.HEADER_CLIENT_TS),
+  requestBody: req.body || '',
+  requestHasBody: !!req.body,
+  requestIsHttps: req.protocol === 'https',
+  requestContentLength: req.headers['content-length'] ? req.headers['content-length'] : 0,
+  requestContentType: req.headers['content-type'] ? req.headers['content-type'] : '',
+  requestQueryString: !isEmptyObject(req.query) ? req.query : '',
+  requestQueryStringHasValue: !isEmptyObject(req.query),
+  requestHeaders: req.headers,
+  requestHeadersCount: req.headers.length,
+  responseBody: res.payload,
+  responseHasBody: !!res.payload,
+  RequestMethod: req.method,
+  RequestPath: req.url,
+  StatusCode: res.statusCode,
+  Elapsed: elapsed || 0,
+  exceptionMessage: err ? err.message : '',
+  exceptionStackTrace: err ? err.stack : '',
+})
+
 const loggerFactory = (esIndex = null) => {
   const streams = [{ stream: process.stdout }]
+
   const hooks = {
     logMethod(inputArgs, method) {
       const data = loggerFilter(inputArgs)
       if (data) return method.apply(this, inputArgs)
       return null
+    },
+  }
+
+  const formatters = {
+    bindings(bindings) {
+      return { pid: bindings.pid, machineName: bindings.hostname }
+    },
+    log(input) {
+      if (typeof input === 'string' || !input.res) return input
+
+      const { res } = input
+      const { err } = input
+      const { request } = res
+
+      return loggerFormatter(request, res.raw, err, input.responseTime)
     },
   }
 
@@ -60,7 +101,7 @@ const loggerFactory = (esIndex = null) => {
     })
   }
 
-  const logger = pino({ level: 'info', hooks }, pinoms.multistream(streams))
+  const logger = pino({ level: 'info', hooks, formatters }, pinoms.multistream(streams))
   return logger
 }
 
@@ -93,6 +134,7 @@ module.exports = fp(
           )
         reply.raw.setHeader(config.HEADER_CLIENT_TS, Date.now())
       }
+      Object.assign(reply.raw, { payload })
       done()
     })
 
@@ -132,5 +174,6 @@ module.exports = fp(
 
 module.exports.loggerFactory = loggerFactory
 module.exports.loggerFilter = loggerFilter
+module.exports.loggerFormatter = loggerFormatter
 module.exports.errorSchema = errorSchema
 module.exports.ResponsaSingleChoiceResource = ResponsaSingleChoiceResource
