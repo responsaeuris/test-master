@@ -28,9 +28,9 @@ sed -i "s|$default_uri|$ELK_URI|g" /_/app/config/constants.js
 
 echo "" && echo "***********************************************************" && /_/build/scripts/print-step.sh "GENERATING BUILD FINGERPRINT"
 
-sed -i "s|CI_PUTS_HERE_LAST_GIT_COMMIT|$LAST_COMMIT|g" /_/app/routes/status/index.js
+sed -i "s|CI_PUTS_HERE_LAST_GIT_COMMIT|$LAST_COMMIT|g" /_/app/routes/status/statusRoute.js
 today=$(date)
-sed -i "s|CI_PUTS_HERE_DEPLOY_DATE|$today|g" /_/app/routes/status/index.js
+sed -i "s|CI_PUTS_HERE_DEPLOY_DATE|$today|g" /_/app/routes/status/statusRoute.js
 
-cat /_/app/routes/status/index.js
+cat /_/app/routes/status/statusRoute.js
 
