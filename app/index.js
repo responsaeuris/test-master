@@ -179,3 +179,4 @@ module.exports.loggerFilter = loggerFilter
 module.exports.loggerFormatter = loggerFormatter
 module.exports.errorSchema = errorSchema
 module.exports.ResponsaSingleChoiceResource = ResponsaSingleChoiceResource
+module.exports.ResponsaRichMessageResource = ResponsaRichMessageResource
