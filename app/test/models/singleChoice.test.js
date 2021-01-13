@@ -1,4 +1,4 @@
-const sut = require('../../models/singleChoiceResource')
+const sut = require('../../models/singleChoice')
 
 describe('results', () => {
   it('spits a single choice', () => {
