@@ -40,14 +40,14 @@ describe('error handling', () => {
     )
   })
 
-  it('answers with an error with invalid response', async () => {
+  it('gets an empty object when schema is wrong', async () => {
     const sut = await helper.setupApp()
     const response = await helper.doGet(sut, '/invalid-response-schema', requiredHeaders)
     expect(response.statusCode).toEqual(200)
     expect(response.payload).toEqual('{}')
   })
 
-  it('answers with an error with invalid response', async () => {
+  it('gets a valid object with valid schema', async () => {
     const sut = await helper.setupApp()
     const response = await helper.doGet(sut, '/valid-response-schema', requiredHeaders)
     expect(response.statusCode).toEqual(200)
