@@ -1,21 +1,5 @@
 const sut = require('../../models/singleChoiceResource')
 
-describe('parsing', () => {
-  it('detect strings', () => {
-    const actual = sut.parse('hi')
-
-    expect(actual.isString).toEqual(true)
-    expect(actual.isComplex).toEqual(false)
-  })
-
-  it('detect objects', () => {
-    const actual = sut.parse({})
-
-    expect(actual.isString).toEqual(false)
-    expect(actual.isComplex).toEqual(true)
-  })
-})
-
 describe('results', () => {
   it('spits a single choice', () => {
     const actual = sut.toSingle('hi')
