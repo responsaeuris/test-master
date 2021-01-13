@@ -15,10 +15,6 @@ const validateResult = (result) => {
 module.exports.toRich = (data, converter) => {
   const parsed = inputType(data)
 
-  if (parsed.isString) {
-    return { text: data }
-  }
-
   if (parsed.isComplex && !converter) {
     throw new Error('missing converter')
   }
@@ -29,7 +25,7 @@ module.exports.toRich = (data, converter) => {
     return result
   }
 
-  throw new Error('dummy exceptions avoids warnings')
+  return { text: data }
 }
 
 module.exports.ResponsaRichMessageResource = {

@@ -19,10 +19,6 @@ const validateResult = (result) => {
 module.exports.toSingle = (data, converter) => {
   const parsed = inputType(data)
 
-  if (parsed.isString) {
-    return { text: data, payload: {} }
-  }
-
   if (parsed.isComplex && !converter) {
     throw new Error('missing converter')
   }
@@ -33,7 +29,7 @@ module.exports.toSingle = (data, converter) => {
     return result
   }
 
-  throw new Error('dummy exceptions avoids warnings')
+  return { text: data, payload: {} }
 }
 
 module.exports.ResponsaSingleChoiceResource = {
