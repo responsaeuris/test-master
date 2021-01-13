@@ -8,6 +8,7 @@ const pinoElastic = require('pino-elasticsearch')
 const cache = require('./cache/cache')
 const { status } = require('./routes/status/index')
 const { toSingle, ResponsaSingleChoiceResource } = require('./models/singleChoice')
+const { toRich, ResponsaRichMessageResource } = require('./models/richMessage')
 const errorSchema = require('./models/error')
 const config = require('./config/constants')
 const checkHeaders = require('./filters/requiredHeaders')
@@ -141,6 +142,7 @@ module.exports = fp(
     f.decorate('coreStatus', status)
     f.decorate('cache', cache)
     f.decorate('singleChoice', toSingle)
+    f.decorate('richMessage', toRich)
 
     translationsKeys = options.translationsKeys
 

@@ -4,13 +4,14 @@ const core = require('..')
 
 describe('plugin registration', () => {
   it('should register the correct decorators', async () => {
-    expect.assertions(3)
+    expect.assertions(4)
 
     const sut = await helper.setupApp()
 
     expect(sut.coreStatus).toBeDefined()
     expect(sut.cache).toBeDefined()
     expect(sut.singleChoice).toBeDefined()
+    expect(sut.richMessage).toBeDefined()
   })
 })
 

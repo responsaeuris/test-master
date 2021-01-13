@@ -5,22 +5,18 @@ const validateResult = (result) => {
   if (typeof result.text !== 'string')
     throw new Error("invalid converter 'text' property is not a string")
 
-  if (!result.payload) throw new Error("invalid converter missing 'payload' property convertion")
-  if (typeof result.payload !== 'object')
-    throw new Error("invalid converter 'payload' property is not an object")
-
   stringArray(result.gallery_urls)
-  ;['description', 'action_title', 'image_url'].forEach((p) => {
+  ;['description', 'image_url'].forEach((p) => {
     if (result[p] && typeof result[p] !== 'string')
       throw new Error(`invalid converter '${p}' is not a string`)
   })
 }
 
-module.exports.toSingle = (data, converter) => {
+module.exports.toRich = (data, converter) => {
   const parsed = inputType(data)
 
   if (parsed.isString) {
-    return { text: data, payload: {} }
+    return { text: data }
   }
 
   if (parsed.isComplex && !converter) {
@@ -36,7 +32,7 @@ module.exports.toSingle = (data, converter) => {
   throw new Error('dummy exceptions avoids warnings')
 }
 
-module.exports.ResponsaSingleChoiceResource = {
+module.exports.ResponsaRichMessageResource = {
   required: ['payload', 'text'],
   type: 'object',
   properties: {
