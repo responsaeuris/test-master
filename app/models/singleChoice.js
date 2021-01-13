@@ -1,24 +1,4 @@
-const parse = (data) => ({
-  isString: typeof data === 'string',
-  isComplex: typeof data === 'object',
-})
-
-const checkGallery = (gallery) => {
-  const throwErr = () => {
-    throw new Error("invalid converter 'gallery_urls' is not an array of strings")
-  }
-
-  if (!gallery) return
-  if (!(gallery instanceof Array)) throwErr()
-
-  let isValid = true
-
-  gallery.forEach((e) => {
-    isValid = isValid && typeof e === 'string'
-  })
-
-  if (!isValid) throwErr()
-}
+const { inputType, stringArray } = require('./resource')
 
 const validateResult = (result) => {
   if (!result.text) throw new Error("invalid converter missing 'text' property convertion")
@@ -29,17 +9,15 @@ const validateResult = (result) => {
   if (typeof result.payload !== 'object')
     throw new Error("invalid converter 'payload' property is not an object")
 
-  checkGallery(result.gallery_urls)
+  stringArray(result.gallery_urls)
   ;['description', 'action_title', 'image_url'].forEach((p) => {
     if (result[p] && typeof result[p] !== 'string')
       throw new Error(`invalid converter '${p}' is not a string`)
   })
 }
 
-module.exports.parse = parse
-
 module.exports.toSingle = (data, converter) => {
-  const parsed = parse(data)
+  const parsed = inputType(data)
   if (parsed.isString) {
     return {
       text: data,

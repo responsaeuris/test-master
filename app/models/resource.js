@@ -1,4 +1,4 @@
-const parse = (data) => ({
+const inputType = (data) => ({
   isString: typeof data === 'string',
   isComplex: typeof data === 'object',
 })
@@ -20,5 +20,5 @@ const stringArray = (gallery) => {
   if (!isValid) throwErr()
 }
 
-module.exports.parse = parse
+module.exports.inputType = inputType
 module.exports.stringArray = stringArray
