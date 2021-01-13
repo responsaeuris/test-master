@@ -1,6 +1,6 @@
 const sut = require('../../filters/requiredHeaders')
 
-describe('error handling', () => {
+describe('required headers', () => {
   const fails = (headers, errorMessage) => {
     expect.assertions(1)
 

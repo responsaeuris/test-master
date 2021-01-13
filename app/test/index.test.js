@@ -181,7 +181,7 @@ describe('log filtering', () => {
     getCalled([error], cb)
   })
 
-  it('skips error responseTime', () => {
+  it('skips when 500', () => {
     notCalled([{ res: { statusCode: 500 } }])
   })
 })
