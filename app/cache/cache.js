@@ -3,12 +3,18 @@ const config = require('../config/constants')
 
 let cache = null
 
-const checkCache = () => {
-  if (cache === null) cache = new NodeCache({ stdTTL: config.CACHE_EXPIRATION_SECONDS })
+const defaultOptions = { stdTTL: config.CACHE_EXPIRATION_SECONDS }
+
+const checkCache = (opts) => {
+  if (cache === null) {
+    cache = new NodeCache({ ...defaultOptions, ...opts })
+  }
 }
 
-module.exports.get = (key, retriever) => {
-  checkCache()
+module.exports.checkCacheItem = (key) => cache.get(key)
+
+module.exports.get = (key, retriever, opts) => {
+  checkCache(opts)
   const value = cache.get(key)
   if (value) {
     return value
@@ -19,8 +25,8 @@ module.exports.get = (key, retriever) => {
   return data
 }
 
-module.exports.delete = (key) => {
-  checkCache()
+module.exports.delete = (key, opts) => {
+  checkCache(opts)
   cache.del(key)
 }
 

@@ -25,4 +25,15 @@ describe('cache life cycle', () => {
     app2.cache.get('foo', () => 'goofy')
     expect(app2.cache.get('foo')).toEqual('goofy')
   })
+
+  it('correctly expires in due time', (done) => {
+    cache.nuke()
+    const key = 'cache-test'
+    cache.get(key, () => 'some-value', { stdTTL: 1, checkperiod: 2 })
+    setTimeout(() => {
+      const actual = cache.checkCacheItem(key)
+      expect(actual).not.toBeDefined()
+      done()
+    }, 1000)
+  })
 })
