@@ -161,6 +161,7 @@ module.exports = fp(
           schemas: {
             ResponsaSingleChoiceResource,
             Error: errorSchema,
+            ResponsaRichMessageResource,
           },
         },
       },
