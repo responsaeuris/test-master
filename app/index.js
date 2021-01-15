@@ -167,7 +167,6 @@ module.exports = fp(
       },
       exposeRoute: true,
       openapi: '3.0.3',
-      addModels: true,
     })
 
     next()
