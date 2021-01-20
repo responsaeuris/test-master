@@ -1,15 +1,13 @@
 {
-  "name": "plugin-core-js",
-  "version": "1.0.0",
-  "description": "",
+  "name": "responsa-plugin-core-js",
+  "version": "0.1.0",
+  "description": "Responsa Plugins Core",
   "main": "index.js",
   "directories": {
     "example": "examples",
     "test": "test"
   },
   "scripts": {
-    "preinstall": "echo \"updating outer package.json\" && npm i shx && shx cp package.json ../package.json && echo \"Done!\"",
-    "postinstall": "shx sed -i \"s/preinstall/do_not_run/g\" ../package.json && shx sed -i \"s/postinstall/do_not_run2/g\" ../package.json",
     "test": "npm run lint && npm run jest",
     "lint": "eslint . test/. --config .eslintrc.json --fix --max-warnings=10",
     "jest": "node --trace-warnings node_modules/.bin/jest --detectOpenHandles --watchAll",

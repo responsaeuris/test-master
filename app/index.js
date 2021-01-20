@@ -28,6 +28,21 @@ const defaultOptions = {
   translationsKeys: [],
 }
 
+const elasticStreamFactory = (options) => ({
+  stream: pinoElastic({
+    index: `${options.index.toLowerCase()}-%{DATE}`,
+    consistency: 'one',
+    node: options.uri,
+    auth: {
+      username: options.user,
+      password: options.password,
+    },
+    rejectUnauthorized: false,
+    'es-version': 7,
+    'flush-bytes': 10,
+  }),
+})
+
 const loggerFilter = (input) => {
   const data = input[0] || []
   const plainResponse = () => data.err || data.res.statusCode !== 500
@@ -59,7 +74,7 @@ const loggerFormatter = (req, res, err, elapsed) => ({
   exceptionStackTrace: err ? err.stack : '',
 })
 
-const loggerFactory = (esIndex = null) => {
+const loggerFactory = (elasticOptions) => {
   const streams = [{ stream: process.stdout }]
 
   const hooks = {
@@ -85,21 +100,8 @@ const loggerFactory = (esIndex = null) => {
     },
   }
 
-  if (esIndex) {
-    streams.push({
-      stream: pinoElastic({
-        index: `${esIndex.toLowerCase()}-%{DATE}`,
-        consistency: 'one',
-        node: config.DEFAULT_ELASTICSEARCH_URI,
-        auth: {
-          username: config.ES_USERNAME,
-          password: config.ES_PASSWORD,
-        },
-        rejectUnauthorized: false,
-        'es-version': 7,
-        'flush-bytes': 10,
-      }),
-    })
+  if (elasticOptions) {
+    streams.push(elasticStreamFactory(elasticOptions))
   }
 
   const logger = pino({ level: 'info', hooks, formatters }, pinoms.multistream(streams))
@@ -171,7 +173,7 @@ module.exports = fp(
 
     next()
   },
-  { fastify: '3.x', name: 'plugin-core' }
+  { fastify: '3.x', name: 'responsa-plugin-core' }
 )
 
 module.exports.loggerFactory = loggerFactory

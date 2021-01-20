@@ -1,7 +1,14 @@
 const fastify = require('fastify')
 const pluginCore = require('../..')
 
-const app = fastify({ logger: pluginCore.loggerFactory('prova-client') })
+const elasticOptions = {
+  uri: 'https://localhost:9200',
+  user: 'newboss',
+  password: 'newboss',
+  index: 'some-index',
+}
+
+const app = fastify({ logger: pluginCore.loggerFactory(elasticOptions) })
 
 app.register(pluginCore, { prefix: '/core' })
 app.log.info('started')

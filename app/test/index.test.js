@@ -103,11 +103,18 @@ describe('single choice resource', () => {
 })
 
 describe('logger factory', () => {
+  const elasticOptions = {
+    uri: 'https://localhost:9200',
+    user: 'newboss',
+    password: 'newboss',
+    index: 'some-index',
+  }
+
   const getLoggerStreams = (logger) =>
     logger[Reflect.ownKeys(logger).find((key) => key.toString() === 'Symbol(pino.stream)')]
 
   it('creates a logger with 2 streams', async () => {
-    const logger = core.loggerFactory('some-index')
+    const logger = core.loggerFactory(elasticOptions)
     const actual = getLoggerStreams(logger)
 
     expect(actual.streams).toBeDefined()

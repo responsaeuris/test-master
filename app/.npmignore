@@ -81,3 +81,21 @@ typings/
 
 # Build client js
 dist/
+
+# Tests
+test/
+
+# Examples
+examples/
+
+# VsCode
+.vscode/
+
+# Eslint
+.eslint*
+
+# Prettier
+.prettierrc
+
+# EditorConfig
+.editorconfig
