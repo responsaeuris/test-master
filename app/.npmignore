@@ -101,4 +101,4 @@ examples/
 .editorconfig
 
 # Git Hooks
-npmversion.sh
+pre-commit-hook.js
