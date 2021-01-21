@@ -3,4 +3,5 @@ module.exports = {
   HEADER_CONVERSATION_ID: 'X-ConversationId',
   HEADER_RESPONSA_TS: 'X-ResponsaTS',
   HEADER_CLIENT_TS: 'X-ClientTS',
+  FAKE_ENTRY: '',
 }
