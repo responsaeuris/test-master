@@ -99,3 +99,6 @@ examples/
 
 # EditorConfig
 .editorconfig
+
+# Git Hooks
+npmversion.sh
