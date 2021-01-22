@@ -8,6 +8,7 @@ const execute = async (cmd) => {
     output = await exec(cmd)
     return output.stdout.trim()
   } catch (e) {
+    console.log(`Execute error: ${e}`)
     return null
   }
 }
@@ -15,7 +16,7 @@ const execute = async (cmd) => {
 module.exports.bumpNpmVersion = async (fromMerge) => {
   // if called from pre-commit but in merge state, do nothing
   const isMerge = await execute('git rev-parse -q --verify MERGE_HEAD')
-  console.log(`fromMerge is "${isMerge}"`)
+  console.log(`fromMerge is "${fromMerge}"`)
   console.log(`MERGE_HEAD is "${isMerge}"`)
   if (!fromMerge && isMerge !== null && isMerge !== undefined && isMerge !== '') return
 
@@ -38,7 +39,7 @@ module.exports.bumpNpmVersion = async (fromMerge) => {
 module.exports.amendLastCommit = async () => {
   console.log('Amending last commit ...')
   const result = await execute('git commit --amend --no-edit')
-  console.log('... done [with result ' + result + ']')
+  console.log(`... done [with result ${result}]`)
 }
 
 module.exports.execute = execute
