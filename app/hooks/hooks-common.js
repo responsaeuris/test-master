@@ -7,7 +7,7 @@ const execute = async (cmd) => {
   return output.stdout.trim()
 }
 
-const bumpNpmVersion = async () => {
+module.exports.bumpNpmVersion = async (amend) => {
   console.log('Bumping npm package version ....')
   const branch = await execute('git rev-parse --abbrev-ref HEAD')
   const versionType = branch !== 'master' ? 'patch' : 'minor'
@@ -15,8 +15,13 @@ const bumpNpmVersion = async () => {
   const version = await execute(`npm version ${versionType}`)
 
   await execute('git add --all')
+
+  if (amend) {
+    await execute('git commit --amend --no-edit')
+  }
+
   console.log('... done')
   console.log(`New package version: ${version}`)
 }
 
-bumpNpmVersion()
+module.exports.execute = execute

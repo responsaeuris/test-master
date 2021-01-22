@@ -1,6 +1,6 @@
 {
   "name": "responsa-plugin-core-js",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Responsa Plugins Core",
   "main": "index.js",
   "directories": {
@@ -22,8 +22,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "node pre-commit-merge-hook.js",
-      "pre-merge-commit": "node pre-commit-merge-hook.js"
+      "pre-commit": "node hooks/pre-commit-hook.js",
+      "pre-merge-commit": "node hooks/pre-merge-commit-hook.js"
     }
   },
   "keywords": [],
