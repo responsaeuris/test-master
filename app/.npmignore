@@ -101,4 +101,4 @@ examples/
 .editorconfig
 
 # Git Hooks
-pre-commit-hook.js
+hooks/*
