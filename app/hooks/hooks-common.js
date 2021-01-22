@@ -26,9 +26,9 @@ module.exports.bumpNpmVersion = async (fromMerge) => {
 
   await execute('git add --all')
 
-  if (fromMerge) {
+  /* if (fromMerge) {
     await execute('git commit')
-  }
+  } */
 
   console.log('... done')
   console.log(`New package version: ${version}`)
