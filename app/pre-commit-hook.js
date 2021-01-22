@@ -10,7 +10,7 @@ const execute = async (cmd) => {
 const bumpNpmVersion = async () => {
   console.log('Bumping npm package version ....')
   const branch = await execute('git rev-parse --abbrev-ref HEAD')
-  const versionType = branch !== 'master' ? 'patch' : 'major'
+  const versionType = branch !== 'master' ? 'patch' : 'minor'
 
   const version = await execute(`npm version ${versionType}`)
 
