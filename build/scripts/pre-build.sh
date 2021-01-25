@@ -21,6 +21,7 @@ then
   oldCommitMessage=$(git log -1 --pretty=%B | cat)
   echo "New version: $newVersion"
   echo "Committing and pushing version bumping ...."
+  git config user.name $GIT_USERNAME
   git commit -a -m "$oldCommitMessage (CI commit bumping version to $newVersion)"
   git push https://$GIT_USERNAME:$GIT_PASSWORD@$GIT_REPO
   echo "Pushed changed version. Exiting for next build to run"
