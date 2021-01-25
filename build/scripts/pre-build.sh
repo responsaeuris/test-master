@@ -8,7 +8,9 @@ echo "Current branch: $GIT_BRANCH"
 echo "Changed into app dir"
 git diff HEAD~1 HEAD -- package.json
 echo "done"
-modVersion=$(git diff HEAD~1 HEAD -- package.json | grep -c version)
+gitOutput=$(git diff HEAD~1 HEAD -- package.json)
+echo "Git Output: $gitOutput"
+modVersion=$(echo $gitOutput | grep -c version)
 echo "ModVersion: $modVersion"
 
 if [ $modVersion -lt 2 ]
