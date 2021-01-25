@@ -5,6 +5,7 @@ echo "" && echo "***********************************************************" &&
 cd /_/app
 echo "Current branch: $GIT_BRANCH"
 echo "Changed into app dir"
+git diff HEAD~1 HEAD -- package.json
 modVersion=$(git diff HEAD~1 HEAD -- package.json | grep -c version)
 echo "ModVersion: $modVersion"
 
