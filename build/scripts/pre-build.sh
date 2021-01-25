@@ -26,7 +26,7 @@ then
   git commit -a -m "$oldCommitMessage (CI commit bumping version to $newVersion)"
   git push https://$GIT_USERNAME:$GIT_PASSWORD@$GIT_REPO
   echo "Pushed changed version. Exiting for next build to run"
-  exit 0
+  exit 14
 fi
 
 echo "Version already changed ... nothing to do here"
