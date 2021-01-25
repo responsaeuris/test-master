@@ -3,20 +3,20 @@ set -e # stops on first error
 
 echo "" && echo "***********************************************************" && /_/build/scripts/print-step.sh "CHECKING IF VERSION BUMPING IS NEEDED"
 cd /_/app
-modVersion = $(git diff HEAD~1 HEAD -- package.json | grep -c version)
+modVersion=$(git diff HEAD~1 HEAD -- package.json | grep -c version)
 
 if [ $modVersion -lt 2 ]
 then
   echo "Version was not changed is this commit... Bumping new version"
-  currentVersion = $(cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]')
+  currentVersion=$(cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]')
   echo "Current version: $currentVersion"
-  bumpType = "patch"
+  bumpType="patch"
   if [$GIT_BRANCH -eq "master"]
   then
-    bumpType = "minor"
+    bumpType="minor"
   fi
   echo "Bumping new $bumpType version ..."
-  newVersion = $(npm version $bumpType)
+  newVersion=$(npm version $bumpType)
   oldCommitMessage=$(git log -1 --pretty=%B | cat)
   echo "New version: $newVersion"
   echo "Committing and pushing version bumping ...."
