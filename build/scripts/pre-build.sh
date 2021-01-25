@@ -22,6 +22,7 @@ then
   echo "New version: $newVersion"
   echo "Committing and pushing version bumping ...."
   git config user.name $GIT_USERNAME
+  git config user.email "$GIT_USERNAME@euris.it"
   git commit -a -m "$oldCommitMessage (CI commit bumping version to $newVersion)"
   git push https://$GIT_USERNAME:$GIT_PASSWORD@$GIT_REPO
   echo "Pushed changed version. Exiting for next build to run"
