@@ -2,6 +2,7 @@
 set -e # stops on first error
 
 echo "" && echo "***********************************************************" && /_/build/scripts/print-step.sh "CHECKING IF VERSION BUMPING IS NEEDED"
+cd /_/app
 modVersion = $(git diff HEAD~1 HEAD -- package.json | grep -c version)
 
 if [ $modVersion -lt 2 ]
@@ -26,6 +27,7 @@ then
 fi
 
 echo "Version already changed ... nothing to do here"
+cd /
 
 echo "" && echo "***********************************************************" && /_/build/scripts/print-step.sh "GENERATING BUILD FINGERPRINT"
 
