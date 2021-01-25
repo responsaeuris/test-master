@@ -3,11 +3,13 @@ set -e # stops on first error
 
 echo "" && echo "***********************************************************" && /_/build/scripts/print-step.sh "CHECKING IF VERSION BUMPING IS NEEDED"
 cd /_/app
+echo "Changed into app dir"
 modVersion=$(git diff HEAD~1 HEAD -- package.json | grep -c version)
+echo "ModVersion: $modVersion"
 
 if [ $modVersion -lt 2 ]
 then
-  echo "Version was not changed is this commit... Bumping new version"
+  echo "Version was not changed in this commit... Bumping new version"
   currentVersion=$(cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]')
   echo "Current version: $currentVersion"
   bumpType="patch"
