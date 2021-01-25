@@ -99,6 +99,3 @@ examples/
 
 # EditorConfig
 .editorconfig
-
-# Git Hooks
-hooks/*

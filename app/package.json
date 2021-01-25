@@ -20,13 +20,6 @@
     "type": "git",
     "url": "https://stash.getconnected.it/scm/rspevo/plugin-core-js.git"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "node hooks/pre-commit-hook.js",
-      "pre-merge-commit": "node hooks/pre-merge-commit-hook.js",
-      "post-merge": "node hooks/post-merge-hook.js"
-    }
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -51,7 +44,6 @@
     "eslint-plugin-prettier": "^3.2.0",
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-react-hooks": "^4.0.0",
-    "husky": "^4.3.8",
     "jest": "^26.6.3",
     "jest-extended": "^0.11.5",
     "jest-junit-reporter": "^1.1.0",
