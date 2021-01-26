@@ -1,40 +1,20 @@
-# fastify-socket.io
+# responsa-plugin-core-js
 
-[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)  ![CI workflow](https://github.com/alemagio/fastify-socket.io/workflows/CI%20workflow/badge.svg)
-
-`fastify-socket.io` enables the use of [Socket.io](https://socket.io/) in a Fastify application.
-
-Supports Fastify versions `3.x`
+`responsa-plugin-core-js` provides logging, open api documentation and Responsa objects for Responsa Plugins
 
 ## Install
+
 ```
-npm i fastify-socket.io
+npm i responsa-plugin-core-js
 ```
 
 ## Usage
-Require `fastify-socket.io` and register it as any other plugin, it will add a `io` decorator.
+
 ```js
 const fastify = require('fastify')()
+const pluginCore = require('responsa-plugin-core-js')
 
-fastify.register(require('fastify-socket.io'), {
-  // put your options here
-})
+const app = fastify({ logger: pluginCore.loggerFactory(elasticOptions) })
 
-fastify.get('/', (req, reply) => {
-  fastify.io.emit('hello')
-})
-
-fastify.listen(3000)
+app.register(pluginCore, { prefix: '/core' })
 ```
-For more details see [examples](https://github.com/alemagio/fastify-socket.io/tree/master/examples)
-
-You can use it as is without passing any option, or you can configure it as explained by Socket.io [doc](https://socket.io/docs/server-api/).
-
-## Acknowledgements
-
-The code is a port for Fastify of [`socket.io`](https://github.com/socketio/socket.io).
-
-## License
-
-Licensed under [MIT](./LICENSE).<br/>
-[`socket.io` license](https://github.com/socketio/socket.io/blob/master/LICENSE)

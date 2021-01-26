@@ -1,10 +1,11 @@
 const fastify = require('fastify')
 const cache = require('../cache/cache')
 
-const doGet = async (fastifyInstance, path) => {
+const doGet = async (fastifyInstance, path, headers) => {
   const serverResponse = await fastifyInstance.inject({
     url: path,
     method: 'GET',
+    headers,
   })
   return serverResponse
 }
@@ -42,6 +43,14 @@ const addErrorRoutes = (app) => {
     { schema: mandatoryQueryParamSchema },
     async (req, reply) => {
       reply.code(200).send('OK')
+    }
+  )
+
+  app.get(
+    '/required-querystring-param-and-response',
+    { schema: { ...mandatoryQueryParamSchema, ...responseSchema } },
+    async (req, reply) => {
+      reply.code(200).send({ field: 'value' })
     }
   )
 

@@ -1,18 +1,18 @@
 {
-  "name": "plugin-core-js",
-  "version": "1.0.0",
-  "description": "",
+  "name": "responsa-plugin-core-js",
+  "version": "0.1.16",
+  "description": "Responsa Plugins Core",
   "main": "index.js",
   "directories": {
     "example": "examples",
     "test": "test"
   },
   "scripts": {
-    "do_not_run": "echo \"updating outher package.json\" && npm i shx && shx cp package.json ../package.json && echo \"Done!\"",
+    "do_not_run": "echo \"updating outer package.json\" && npm i shx && shx cp package.json ../package.json && echo \"Done!\"",
     "do_not_run2": "shx sed -i \"s/do_not_run/do_not_run/g\" ../package.json && shx sed -i \"s/do_not_run2/do_not_run2/g\" ../package.json",
     "test": "npm run lint && npm run jest",
     "lint": "eslint . test/. --config .eslintrc.json --fix --max-warnings=10",
-    "jest": "jest --detectOpenHandles --watchAll",
+    "jest": "node --trace-warnings node_modules/.bin/jest --detectOpenHandles --watchAll",
     "jest:ci": "jest --forceExit --ci --testResultsProcessor=\"./node_modules/jest-junit-reporter\" --coverage=true",
     "start": "node ./examples/basic/server.js",
     "dev": "PORT=3100 node ./examples/basic/server.js",
@@ -28,6 +28,7 @@
   "dependencies": {
     "fastify": "^3.0.0",
     "fastify-autoload": "^3.0.2",
+    "fastify-error": "^0.2.0",
     "fastify-oas": "^3.0.8",
     "fastify-plugin": "^3.0.0",
     "fastify-swagger": "^3.5.0",
@@ -46,6 +47,7 @@
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-react-hooks": "^4.0.0",
     "jest": "^26.6.3",
+    "jest-extended": "^0.11.5",
     "jest-junit-reporter": "^1.1.0",
     "prettier": "^2.2.1",
     "shx": "^0.3.3"
