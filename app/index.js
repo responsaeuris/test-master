@@ -14,6 +14,7 @@ const config = require('./config/constants')
 const checkHeaders = require('./filters/requiredHeaders')
 
 let translationsKeys = null
+let unrestrictedRoutes = null
 
 const isEmptyObject = (obj) => Object.keys(obj).length === 0 && typeof obj === 'object'
 
@@ -26,6 +27,12 @@ const defaultOptions = {
     { url: 'server2 url', description: 'server2 description' },
   ],
   translationsKeys: [],
+  unrestrictedRoutes: [],
+}
+
+const isUnrestrictedRoute = (url) => {
+  const found = unrestrictedRoutes.filter((route) => url.includes(route))
+  return found.length > 0
 }
 
 const elasticStreamFactory = (options) => ({
@@ -113,18 +120,20 @@ module.exports = fp(
     const f = fastify
     const options = { ...defaultOptions, ...opts, cache }
 
+    unrestrictedRoutes = [...['/documentation', '/status'], ...options.unrestrictedRoutes]
+
     f.register(autoload, {
       dir: path.join(__dirname, 'routes'),
       options: { ...opts },
     })
 
     f.addHook('onRequest', (request, reply, done) => {
-      if (!request.url.includes('/documentation')) checkHeaders(request.headers)
+      if (!isUnrestrictedRoute(request.url)) checkHeaders(request.headers)
       done()
     })
 
     f.addHook('onSend', (request, reply, payload, done) => {
-      if (!request.url.includes('/documentation')) {
+      if (!isUnrestrictedRoute(request.url)) {
         if (!reply.raw.getHeader(config.HEADER_CONVERSATION_ID))
           reply.raw.setHeader(
             config.HEADER_CONVERSATION_ID,
