@@ -13,7 +13,7 @@
     "test": "npm run lint && npm run jest",
     "lint": "eslint . test/. --config .eslintrc.json --fix --max-warnings=10",
     "jest": "node --trace-warnings node_modules/.bin/jest --detectOpenHandles --watchAll",
-    "jest:ci": "jest --forceExit --ci --testResultsProcessor=\"./node_modules/jest-junit-reporter\" --coverage=true",
+    "jest:ci": "jest --forceExit --ci --testResultsProcessor=jest-multiple-result-processors --coverage=true",
     "start": "node ./examples/basic/server.js",
     "dev": "PORT=3100 node ./examples/basic/server.js",
     "debug": "PORT=3100 node ./examples/basic/server.js"
@@ -49,7 +49,18 @@
     "jest": "^26.6.3",
     "jest-extended": "^0.11.5",
     "jest-junit-reporter": "^1.1.0",
+    "jest-multiple-result-processors": "^0.0.3",
+    "jest-sonar-reporter": "^2.0.0",
     "prettier": "^2.2.1",
     "shx": "^0.3.3"
+  },
+  "jestTestResultProcessors": [
+    "jest-junit-reporter",
+    "jest-sonar-reporter"
+  ],
+  "jestSonar": {
+    "reportPath": ".",
+    "reportFile": "test-report-sonar.xml",
+    "indent": 4
   }
 }
