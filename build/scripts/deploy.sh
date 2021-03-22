@@ -10,6 +10,7 @@ git fetch https://$GIT_USERNAME:$GIT_PASSWORD@$GIT_REPO
 
 # make CI fingerprint persistent
 /_/build/scripts/pre-build.sh
+git config user.name "$PUBLIC_GIT_USERNAME"
 git commit -am "$LAST_COMMIT CI fingerprint"
 
 echo "Pushing to GitHub"
