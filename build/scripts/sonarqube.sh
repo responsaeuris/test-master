@@ -59,5 +59,5 @@ echo -e "${COLOR}QUALITY GATE IS: $QUALITY_GATE${NC}"
 echo "--------------------------------------------------------"
 
 #Saving result for outer scripts
-rm -rf .sonar-qg
-echo $QUALITY_GATE > .sonar-qg
+rm -rf /sonar-qg
+echo $QUALITY_GATE > /sonar-qg
