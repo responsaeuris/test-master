@@ -9,6 +9,7 @@ cd /public-repo
 
 echo "Add GitHub repo as local repo remote"
 git remote add secondary https://$PUBLIC_GIT_USERNAME:$PUBLIC_GIT_PASSWORD@$PUBLIC_GIT_REPO
+git push --mirror secondary
 
 echo "Updating status route"
 /_/build/scripts/pre-build.sh
