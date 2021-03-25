@@ -15,6 +15,8 @@ echo "Updating status route"
 cp /_/app/routes/status/statusRoute.js /public-repo/app/routes/status/statusRoute.js
 
 echo "Committing to public repo"
+git config --global user.email "$PUBLIC_GIT_USER_EMAIL"
+git config --global user.name "$PUBLIC_GIT_USERNAME"
 git add app/routes/status/statusRoute.js
 git commit -m "$LAST_COMMIT CI fingerprint"
 
