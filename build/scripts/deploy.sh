@@ -8,8 +8,8 @@ git clone --branch $GIT_BRANCH https://$GIT_USERNAME:$GIT_PASSWORD@$GIT_REPO pub
 cd /public-repo
 
 echo "Add GitHub repo as local repo remote"
-git remote add secondary https://$PUBLIC_GIT_USERNAME:$PUBLIC_GIT_PASSWORD@$PUBLIC_GIT_REPO
-git push --mirror secondary
+git remote add -t $GIT_BRANCH secondary https://$PUBLIC_GIT_USERNAME:$PUBLIC_GIT_PASSWORD@$PUBLIC_GIT_REPO
+git push --mirror secondary $GIT_BRANCH
 
 echo "Updating status route"
 /_/build/scripts/pre-build.sh
@@ -22,7 +22,7 @@ git add app/routes/status/statusRoute.js
 git commit -m "$LAST_COMMIT CI fingerprint"
 
 echo "Pushing to GitHub"
-git push secondary
+git push secondary $GIT_BRANCH
 
 echo "done"
 
