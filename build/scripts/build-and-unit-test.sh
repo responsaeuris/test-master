@@ -28,6 +28,4 @@ echo "copying unit test result to /test-result folder"
 cp test-report.xml /test-reports/TestResult.xml
 
 echo "copying coverage reports to /test-result folder"
-cd coverage/lcov-report
-
-mv -v ./* /test-reports/
+rsync -a coverage/lcov-report/ /test-reports

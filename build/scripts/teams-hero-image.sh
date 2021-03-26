@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # =============================================================================
 #  Author: Chu-Siang Lai / chusiang (at) drx.tw
 #  Filename: teams-chat-post.sh

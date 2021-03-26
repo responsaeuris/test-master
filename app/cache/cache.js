@@ -11,7 +11,10 @@ const checkCache = (opts) => {
   }
 }
 
-module.exports.checkCacheItem = (key) => cache.get(key)
+module.exports.checkCacheItem = (key) => {
+  checkCache()
+  cache.get(key)
+}
 
 module.exports.get = (key, retriever, opts) => {
   checkCache(opts)
